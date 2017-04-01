@@ -17,12 +17,10 @@
 #   along with Invasores; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#import pygame
-#import pygame.mixer
-
 from objetodojogo import *
 
 import som
+
 
 class Laser(ObjetoDoJogo):
     """
@@ -32,12 +30,12 @@ class Laser(ObjetoDoJogo):
     """
 
     def __init__(self, nome, pos, imagem=None, tipo="JOGADOR"):
-        ObjetoDoJogo.__init__(self,nome, pos, imagem,tipo)
+        ObjetoDoJogo.__init__(self, nome, pos, imagem, tipo)
         self.velocidade = 15
         self.resistencia = 10
         self.dano = 50
-        self.snd_disparo = som.carregue("LASER_DISPARO","sons/missile.wav")
-        if som.canais("LASER_DISPARO")<4:
+        self.snd_disparo = som.carregue("LASER_DISPARO", "sons/missile.wav")
+        if som.canais("LASER_DISPARO") < 4:
             self.som = som.reproduza("LASER_DISPARO")
 
     def move(self, direcao):
@@ -46,17 +44,17 @@ class Laser(ObjetoDoJogo):
     def respire(self):
         ObjetoDoJogo.respire(self)
         self.pos[1] -= self.velocidade
-        if self.pos[1]<0:
+        if self.pos[1] < 0:
             self.visivel = False
             try:
                 self.universo.remova(self)
-            #self.som.stop()
-            except:
-               pass
+            # self.som.stop()
+            except Exception:
+                pass
 
     def teste_colisao(self):
         pass
 
     def colida(self, objeto):
-        if objeto.nome != "Nave": #Evita colitir com a nave
-            ObjetoDoJogo.colida(self,objeto)
+        if objeto.nome != "Nave":  # Evita colitir com a nave
+            ObjetoDoJogo.colida(self, objeto)

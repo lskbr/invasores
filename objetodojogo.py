@@ -19,6 +19,7 @@
 
 from pygame.locals import *
 
+
 class ObjetoDoJogo:
     """
         Classe ObjetoDoJogo
@@ -37,6 +38,7 @@ class ObjetoDoJogo:
         universo aponta para o universo ao qual este objeto pertence
             seu valor é setado pela classe Universo no momento da inclusão
     """
+
     def __init__(self, nome, pos, imagem=None, tipo=None):
         self.nome = nome
         self.pos = pos
@@ -57,7 +59,7 @@ class ObjetoDoJogo:
 
     def set_imagem(self, imagem):
         self.imagem = imagem
-        self.imagem.set_colorkey(self.imagem.get_at((0,0)), RLEACCEL)
+        self.imagem.set_colorkey(self.imagem.get_at((0, 0)), RLEACCEL)
         self.lx = self.imagem.get_width()
         self.ly = self.imagem.get_height()
 
@@ -67,13 +69,13 @@ class ObjetoDoJogo:
                 self.resistencia, self.dano, self.lx, self.ly)
 
     def respire(self):
-        #print "RObj %d" % self.resistencia
-        if self.resistencia <=0:
-            #self.universo.objetos.remove(self)
+        # print "RObj %d" % self.resistencia
+        if self.resistencia <= 0:
+            # self.universo.objetos.remove(self)
             if self.universo is not None:
                 self.universo.remova(self)
 
-    def carregue_imagem(self,nome):
+    def carregue_imagem(self, nome):
         self.imagem = pygame.image.load(nome).convert()
 
     def move(self, direcao):
@@ -92,5 +94,4 @@ class ObjetoDoJogo:
 
     def retangulo(self):
         return (self.pos[0], self.pos[1],
-                self.pos[0]+self.lx, self.pos[1]+self.ly)
-
+                self.pos[0] + self.lx, self.pos[1] + self.ly)

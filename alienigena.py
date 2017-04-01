@@ -25,24 +25,24 @@ from objetodojogo import *
 
 import som
 
+
 class Alienigena(ObjetoDoJogo):
     alienigenas_vivos = 0
 
     def __init__(self, nome, pos, imagem, tipo="INIMIGO"):
-        #ObjetoDoJogo.__init__(self,nome, pos, imagem, tipo)
-        ObjetoDoJogo.__init__(self,nome, [pos[0],pos[1]-200], imagem, tipo)
-        self.iy = 3 + naleatorios.faixa(0,5)
-        self.ix = 3 + naleatorios.faixa(0,5)
-        self.posical_final = pos[1];
+        ObjetoDoJogo.__init__(self, nome, [pos[0], pos[1] - 200], imagem, tipo)
+        self.iy = 3 + naleatorios.faixa(0, 5)
+        self.ix = 3 + naleatorios.faixa(0, 5)
+        self.posical_final = pos[1]
         self.resistencia = 50
         self.dano = 50
         self.valor = 10
         self.script_movimento = None
         self.pos_script = 0
         self.qmov = 0
-        Alienigena.alienigenas_vivos +=1
+        Alienigena.alienigenas_vivos += 1
 
-        som.carregue("ALIENIGENA_EXP","sons/boom.wav")
+        som.carregue("ALIENIGENA_EXP", "sons/boom.wav")
 
     def move(self, direcao):
         pass
@@ -54,26 +54,19 @@ class Alienigena(ObjetoDoJogo):
 
     def respire(self):
         ObjetoDoJogo.respire(self)
-        #if self.imagem.get_alpha() == None:
-        #    self.imagem = self.imagem.convert_alpha(self.imagem)
-        #alfa = self.imagem.get_alpha()-1
-        #print alfa
-        #if alfa > 0:
-        #    self.imagem.set_alpha(alfa)
-        #self.imagem = pygame.transform.rotate(self.imagem, 2)
-        if self.resistencia<=0:
+        if self.resistencia <= 0:
             som.reproduza("ALIENIGENA_EXP")
-            Alienigena.alienigenas_vivos -=1
+            Alienigena.alienigenas_vivos -= 1
 
-        if self.pos[1]<self.posical_final:
-            self.iy=10
+        if self.pos[1] < self.posical_final:
+            self.iy = 10
         else:
-            if self.iy==10:
-                self.iy=self.script_movimento[self.pos_script][1]
-        if self.script_movimento != None:
-            self.qmov+=1
-            if self.qmov >=self.script_movimento[self.pos_script][2]:
-                self.pos_script+=1
+            if self.iy == 10:
+                self.iy = self.script_movimento[self.pos_script][1]
+        if self.script_movimento is not None:
+            self.qmov += 1
+            if self.qmov >= self.script_movimento[self.pos_script][2]:
+                self.pos_script += 1
                 self.qmov = 0
                 self.pos_script = self.pos_script % len(self.script_movimento)
                 self.ix = self.script_movimento[self.pos_script][0]
@@ -82,17 +75,14 @@ class Alienigena(ObjetoDoJogo):
         self.pos[0] += self.ix
         self.pos[1] += self.iy
 
-        if self.pos[0]+self.lx > self.universo.largura or self.pos[0]<0:
-            if self.pos[0]<0:
-                self.pos[0]=0
+        if self.pos[0] + self.lx > self.universo.largura or self.pos[0] < 0:
+            if self.pos[0] < 0:
+                self.pos[0] = 0
             else:
-                self.pos[0] = self.universo.largura-self.lx
+                self.pos[0] = self.universo.largura - self.lx
             self.ix *= -1
-        if self.pos[1]+self.ly > self.universo.altura: # or self.pos[1]<0:
-            #if self.pos[1]>0 and self.pos[1]+self.iy<0:
-            #    self.pos[1]=0
-            #else:
-            self.pos[1] = self.universo.altura-self.ly
-            if self.iy==0:
-                self.iy=2
+        if self.pos[1] + self.ly > self.universo.altura:  # or self.pos[1]<0:
+            self.pos[1] = self.universo.altura - self.ly
+            if self.iy == 0:
+                self.iy = 2
             self.iy *= -1

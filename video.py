@@ -26,15 +26,17 @@ pygame.font.init()
 
 imagens = {}  # type: Dict[str, object]
 
-modos = [ [640,480], [800,600], [1024,768], [1680,1050] ]
+modos = [[640, 480], [800, 600], [1024, 768], [1680, 1050]]
 
 tela = None
 
-def carregue(nome,local):
+
+def carregue(nome, local):
     global imagens, tela
     if nome not in imagens:
         imagens[nome] = pygame.image.load(local).convert(tela)
     return imagens[nome]
+
 
 def imagem(nome):
     global imagens
@@ -49,8 +51,8 @@ class Imagem:
     def __init__(self, nome, local):
         self.carregue_imagem(nome, local)
 
-    def ponto_croma(self,x,y):
-        self.imagem.set_colorkey(self.imagem.get_at((x,y)), RLEACCEL)
+    def ponto_croma(self, x, y):
+        self.imagem.set_colorkey(self.imagem.get_at((x, y)), RLEACCEL)
 
     def carregue_imagem(self, nome, local):
         self.imagem = carregue(nome, local)
@@ -64,11 +66,9 @@ class Imagem:
         return self.lx
 
 
-
-
 class Video:
 
-    def __init__(self, dimensao, tela_cheia = False):
+    def __init__(self, dimensao, tela_cheia=False):
         self.notifica = []
         self.modo(dimensao, tela_cheia)
         #   self.tela = pygame.display.set_mode(dimensao,
@@ -76,18 +76,17 @@ class Video:
         self.ifonte = pygame.font.Font(None, 24)
         self.modo_atual = 1
 
-
     def adicione(self, funcao):
         self.notifica.append(funcao)
 
-    def notifique(self,mensagem):
+    def notifique(self, mensagem):
         for m in self.notifica:
-                m(mensagem)
+            m(mensagem)
 
     def modo(self, dimensao, tela_cheia=None):
         global tela
         self.dimensao = dimensao
-        if tela_cheia == None:
+        if tela_cheia is None:
             tela_cheia = self.tela_cheia
         else:
             self.tela_cheia = tela_cheia
@@ -98,29 +97,26 @@ class Video:
         tela = self.tela
         self.notifique(0)
 
-
     def proximo_modo(self):
-        self.modo_atual= (self.modo_atual + 1) % len(modos)
+        self.modo_atual = (self.modo_atual + 1) % len(modos)
         self.modo(modos[self.modo_atual])
 
     def anterior_modo(self):
-        self.modo_atual-=1
+        self.modo_atual -= 1
         if self.modo_atual < 0:
-            self.modo_atual = len(modos)-1
+            self.modo_atual = len(modos) - 1
         self.modo(modos[self.modo_atual])
 
-    def faz_tela_cheia(self,sim=None):
-        if sim == None:
+    def faz_tela_cheia(self, sim=None):
+        if sim is None:
             sim = ~ self.tela_cheia
         self.modo(self.dimensao, sim)
 
     def atualize(self):
         pygame.display.flip()
 
-
-    def limpe(self, cor = (0,0,0,0)):
+    def limpe(self, cor=(0, 0, 0, 0)):
         self.tela.fill(cor)
-
 
     def desenhe(self, imagem, posicao):
         self.tela.blit(imagem, posicao)
@@ -129,7 +125,7 @@ class Video:
         self.ifonte = pygame.font.Font(None, tamanho)
 
     def texto(self, mensagem, cor):
-        imagem = self.ifonte.render(mensagem,True, cor)
+        imagem = self.ifonte.render(mensagem, True, cor)
         return imagem
 
     def titulo(self, nome):
@@ -137,4 +133,3 @@ class Video:
 
     def icone(self, imagem):
         pygame.display.set_icon(imagem)
-

@@ -19,12 +19,14 @@
 
 from objetodojogo import *
 
+
 class ObjetosBonus(ObjetoDoJogo):
     """
         Classe utilizada para representar os objetos de recarga de munição ou resistência
     """
-    def __init__(self, nome, pos, imagem=None,tipo="INIMIGO"):
-        ObjetoDoJogo.__init__(self,nome, pos, imagem,tipo)
+
+    def __init__(self, nome, pos, imagem=None, tipo="INIMIGO"):
+        ObjetoDoJogo.__init__(self, nome, pos, imagem, tipo)
         self.iy = 5
         self.ix = 0
         self.resistencia = 1000
@@ -34,12 +36,12 @@ class ObjetosBonus(ObjetoDoJogo):
     def respire(self):
         ObjetoDoJogo.respire(self)
         self.pos[1] += self.iy
-        if self.pos[1]>self.universo.altura:
+        if self.pos[1] > self.universo.altura:
             self.resistencia = 0
             self.visivel = 0
             try:
                 self.universo.objetos.remove(self)
-            except:
+            except Exception:
                 pass
 
     def colida(self, objeto):

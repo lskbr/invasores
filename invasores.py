@@ -141,13 +141,13 @@ class Invasores:
 
     def carregue_imagens(self):
         self.iJogador = video.carregue("NAVE", "img/nave.png")
-        self.iMissil = video.carregue("TIRO", "laser.png")
+        self.iMissil = video.carregue("TIRO", "img/laser.png")
         self.iInimigo = video.carregue("INIMIGO", "img/inimigo.png")
-        self.iCaixaDeMisseis = video.carregue("CMISSIL", "caixademisseis.png")
-        self.iCaixaDeResistencia = video.carregue("CRESITENCIA","caixaderesistencia.png")
-        self.logo = video.Imagem("LOGO","Invasoreslogo.png")
+        self.iCaixaDeMisseis = video.carregue("CMISSIL", "img/caixademisseis.png")
+        self.iCaixaDeResistencia = video.carregue("CRESITENCIA","img/caixaderesistencia.png")
+        self.logo = video.Imagem("LOGO","img/Invasoreslogo.png")
         self.logo.ponto_croma(0,0)
-        self.fim_de_jogo = video.Imagem("FIMDEJOGO","fimdejogo.png")
+        self.fim_de_jogo = video.Imagem("FIMDEJOGO","img/fimdejogo.png")
         self.fim_de_jogo.ponto_croma(0,0)
 
 

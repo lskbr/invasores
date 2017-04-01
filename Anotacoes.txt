@@ -1,0 +1,37 @@
+Versão inicial programada em 21/09/2003
+Em 22/09/2003 versão 0.5 enviada para o Gamessa
+
+Coisas a melhorar:
+- Animação
+- Vários tipos de inimigos
+- Som
+- Feedback do teclado
+- Placar - usar mais cores
+- Fases
+- Vidas
+- High Scores
+
+Verificar:
+    while 1:
+        event = pygame.event.poll()
+        if event.type == QUIT or (event.type == KEYDOWN):
+            break
+
+pygame.display.flip()
+
+pygame.mouse.set_visible(0)
+
+No setcolorkey: RLEACCEL
+
+pygame.display.set_mode(size, [flags, [depth]]) -> Surface 
+HWPALETTE, DOUBLEBUF, and/or FULLSCREEN
+HWSURFACE - surface in hardware video memory. (equal to 1)
+RESIZABLE - display window is resizeable
+ASYNCBLIT - surface blits happen asynchronously (threaded)
+OPENGL - display surface will be controlled by opengl
+HWPALETTE - display surface has animatable hardware palette entries
+DOUBLEBUF - hardware display surface is page flippable
+FULLSCREEN - display surface is fullscreen (nonwindowed)
+RLEACCEL - compile for quick alpha blits, only set in alpha or colorkey funcs
+NOFRAME - no window decorations
+

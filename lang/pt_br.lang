@@ -1,0 +1,8 @@
+misseis=misseis
+pressionequalquertecla=Pressione qualquer tecla para comecar
+pressionexour=Pressione [X] para sair ou [R] para jogar de novo
+score=Pontos: %d Resistencia: %d Misseis: %d
+scorefps=Pontos: %d Resistencia: %d Misseis: %d FPS: %d
+fase1=Fase 1
+fase2=Fase 2
+venceu=Voce venceu !

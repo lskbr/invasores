@@ -1,0 +1,8 @@
+misseis=Missile
+pressionequalquertecla=Appuyez sur une touche pour démarrer
+pressionexour=Appuyez sur [X] pour sortir ou sur [R] pour rejouer
+score=Points: %d Armure: %d Missiles: %d
+scorefps=Points: %d Armure: %d Missiles: %d FPS: %d
+fase1=Niveau 1
+fase2=Niveau 2
+venceu=Vous avez gagné !

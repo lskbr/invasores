@@ -1,0 +1,8 @@
+misseis=Missiles
+pressionequalquertecla=Press any key to start
+pressionexour=Press [X] to exit or [R] to play again
+score=Points: %d Armour: %d Missiles: %d
+scorefps=Points: %d Armour: %d Missiles: %d FPS: %d
+fase1=Level 1
+fase2=Level 2
+venceu=You won !

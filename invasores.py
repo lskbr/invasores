@@ -1,65 +1,64 @@
 #!/usr/bin/python
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 # Data: 21 de Setembro de 2003
-# Vers„o 0.5 - 22/09/2003
-#               Funcionamento b·sico
-# Vers„o 0.6 - 23/09/2003
-#               Ajuste e coment·rios
-#               AdiÁ„o de som
-#               Melhoria das rotinas de impres„o
+# Vers√£o 0.5 - 22/09/2003
+#               Funcionamento b√°sico
+# Vers√£o 0.6 - 23/09/2003
+#               Ajuste e coment√°rios
+#               Adi√ß√£o de som
+#               Melhoria das rotinas de impres√£o
 #               Bugs de fechamento corrigidos
 #               Tratamento de eventos melhorados
-# Vers„o 0.7 - 24/09/2003
-#               Melhoria nos gr·ficos
-#               AcentuaÁ„o do texto: contribuiÁ„o de LuÌs Braga (SciTE)
-#               Imagem de tÌtulo e fim feitas no GIMP
-#               Novos gr·ficos
-#               Recarga de MÌsseis
-#               Recarga de ResistÍncia
+# Vers√£o 0.7 - 24/09/2003
+#               Melhoria nos gr√°ficos
+#               Acentua√ß√£o do texto: contribui√ß√£o de Lu√≠s Braga (SciTE)
+#               Imagem de t√≠tulo e fim feitas no GIMP
+#               Novos gr√°ficos
+#               Recarga de M√≠sseis
+#               Recarga de Resist√™ncia
 #               Nivel de dificuldade progressivo (mais inimigos a cada segundo a cada 10 segundos) :-)
-#               Redutor de tiro (sÛ se dispara uma vez a cada 3 frames ou 1/10 s
-# Vers„o 0.8 -  12/04/2004
-#               Suporte ‡ Joystick (aceleracao fixa)
-#               Suporte ‡ Mouse (aceleracao variavel - max 15)
+#               Redutor de tiro (s√≥ se dispara uma vez a cada 3 frames ou 1/10 s
+# Vers√£o 0.8 -  12/04/2004
+#               Suporte √† Joystick (aceleracao fixa)
+#               Suporte √† Mouse (aceleracao variavel - max 15)
 #               ESC sai
 #               M misses (+1000)
 #               R resistencia (+1000)
-# Vers„o 0.9 - 05/03/2005
-#               # Fazendo # Limpeza no cÛdigo
+# Vers√£o 0.9 - 05/03/2005
+#               # Fazendo # Limpeza no c√≥digo
 #               # Fazendo # Isolamento da SDL em classes especificas
-#               Divis„o das classes em v·rios arquivos
+#               Divis√£o das classes em v√°rios arquivos
 #               # Fazendo # Classe de recursos (som e imagem)
-#               CorreÁ„o do bug de Joystick [1157541]
-#               CorreÁ„o do bug de Som (para micros sem som) [1157542]
-#               CorreÁ„o de erro de path no Linux [1157558]
+#               Corre√ß√£o do bug de Joystick [1157541]
+#               Corre√ß√£o do bug de Som (para micros sem som) [1157542]
+#               Corre√ß√£o de erro de path no Linux [1157558]
 #               * - Alterna FullScreen
-#               + - PrÛximo modo de vÌdeo
-#               - - Modo de vÌdeo anterior
+#               + - Pr√≥ximo modo de v√≠deo
+#               - - Modo de v√≠deo anterior
 #               Estrelas cintilantes
-# Vers„o 0.9.1 - 12/11/2006
+# Vers√£o 0.9.1 - 12/11/2006
 #              Controlador de jogo implementado
 #              Resolvido bug de controle com mouse
 #              Melhor jogabilidade
 #              Resolvido bug ao iniciar nova partida
 #              Primeiros testes com traducao
-#              ImplemenaÁao basica de fases
-# Vers„o 0.9.2 - 17/11/2006
-#              Adicionado espanhol e francÍs a lista de traduÁao
-# Vers„o 0.9.3 - 04/2007
-# Vers„o 0.9.4 - 24/11/2007
-#              Modificada posiÁ„o inicial das naves
-# Vers„o 0.9.9 - 01/04/2017
-#              MigraÁ„o para Python 3.6 e GitHub
+#              Implemena√ßao basica de fases
+# Vers√£o 0.9.2 - 17/11/2006
+#              Adicionado espanhol e franc√™s a lista de tradu√ßao
+# Vers√£o 0.9.3 - 04/2007
+# Vers√£o 0.9.4 - 24/11/2007
+#              Modificada posi√ß√£o inicial das naves
+# Vers√£o 0.9.9 - 01/04/2017
+#              Migra√ß√£o para Python 3.6 e GitHub
 
-# TODO: limpar o cÛdigo
+# TODO: limpar o c√≥digo
 # TODO: reprojetar a engine de controle
 # TODO: introduzir variabilidade de movimentos nos aliens
-# TODO: criar telas de configuraÁ„o
-# TODO: nÌveis de dificuldade (fases)
+# TODO: criar telas de configura√ß√£o
+# TODO: n√≠veis de dificuldade (fases)
 # TODO: high score
-# TODO: campo de forÁa
+# TODO: campo de for√ßa
 # TODO: novas armas
 # TODO: novos inimigos - boss
 
@@ -79,7 +78,7 @@
 #   along with Invasores; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# MÛdulos do PyGame
+# M√≥dulos do PyGame
 
 import pygame
 
@@ -87,10 +86,10 @@ import pygame.joystick
 #import pygame.mixer
 from pygame.locals import *
 
-# MÛdulos do Python
+# M√≥dulos do Python
 
 
-# MÛdulos do jogo
+# M√≥dulos do jogo
 from universo import *
 from objetodojogo import *
 from nave import *
@@ -109,7 +108,7 @@ class Invasores:
     """
         Classe Invasores
         ----------------
-        Esta classe È responsavel pelo jogo em si.
+        Esta classe √© responsavel pelo jogo em si.
         Toda customizacao deve ser feita aqui
     """
     def __init__(self, tela):
@@ -287,7 +286,7 @@ class Invasores:
         self.universo.desenhe_fundo()
         self.universo.desenhe([-1,-1],self.logo.imagem)
         self.universo.escreva([-1,450],  traducao.pega("pressionequalquertecla"), (255,255,0), 24)
-        self.universo.escreva([-1,200],  "[P]PortuguÍs [E]English [S]SpaÒol [F]FranÁais", (255,255,0), 24)
+        self.universo.escreva([-1,200],  "[P]Portugu√™s [E]English [S]Spa√±ol [F]Fran√ßais", (255,255,0), 24)
         self.universo.atualize()
         while 1:
             #self.universo.inicie_sincronia()

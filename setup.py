@@ -1,4 +1,3 @@
-# setup.py
 from distutils.core import setup
 import glob
 import py2exe

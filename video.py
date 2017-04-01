@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 
@@ -21,10 +20,11 @@
 import pygame
 
 from pygame.locals import *
+from typing import Dict
 
 pygame.font.init()
 
-imagens = {}
+imagens = {}  # type: Dict[str, object]
 
 modos = [ [640,480], [800,600], [1024,768], [1680,1050] ]
 
@@ -42,7 +42,7 @@ def imagem(nome):
 
 
 class Imagem:
-    imagem = None
+    imagem = None  # type: object
     lx = 0
     ly = 0
 

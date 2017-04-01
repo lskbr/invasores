@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 
@@ -16,7 +15,7 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with Invasores; if not, write to the Free Software
-#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA           
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
 import pygame
@@ -33,14 +32,14 @@ class Score(ObjetoDoJogo):
         ------------
         Utilizada para exibir o score do jogo.
         Implementada como um objeto normal, podendo inclusive suportar
-        animação.
+        animaÃ§Ã£o.
     """
     def __init__(self, nome, pos=[0,0]):
         ObjetoDoJogo.__init__(self,nome, pos)
         self.fonte = pygame.font.Font(None, 30)
         self.fonte.set_bold(True)
         self.jogador = None
-        
+
     def respire(self):
         #ObjetoDoJogo.respire(self)
         self.imagem = self.fonte.render(traducao.pega("score") % \
@@ -48,15 +47,15 @@ class Score(ObjetoDoJogo):
                                         self.jogador.resistencia,
                                         self.jogador.misseis),
                                         True, (255,255,0,0))
-                                        
-                                        
+
+
 class Texto(ObjetoDoJogo):
     """
         Classe Score
         ------------
         Utilizada para exibir o score do jogo.
         Implementada como um objeto normal, podendo inclusive suportar
-        animação.
+        animaÃ§Ã£o.
     """
     def __init__(self, nome, pos,texto,  tamanho, tempo, universo, cor):
         ObjetoDoJogo.__init__(self,nome, pos)
@@ -70,18 +69,18 @@ class Texto(ObjetoDoJogo):
         self.imagem = self.fonte.render(traducao.pega(self.texto) , True, self.cor)
         if self.pos==[-1,-1]:
             self.pos = [  (self.universo.largura - self.imagem.get_width()) /2 , (self.universo.altura - self.imagem.get_height()) /2]
-            
+
     def respire(self):
         #ObjetoDoJogo.respire(self)
         self.resistencia -= 1
         ObjetoDoJogo.respire(self)
-        
-        
-                                        
+
+
+
 class ScoreComFPS(Score):
     def __init__(self, nome, pos):
         Score.__init__(self,nome,pos)
-        
+
     def respire(self):
         #ObjetoDoJogo.respire(self)
         clock.tick(60)
@@ -89,5 +88,5 @@ class ScoreComFPS(Score):
                                         (self.universo.score,
                                         self.jogador.resistencia,
                                         self.jogador.misseis, clock.get_fps()),
-                                        True, (255,255,0,0))        
-    
+                                        True, (255,255,0,0))
+

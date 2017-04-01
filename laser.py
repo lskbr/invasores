@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 

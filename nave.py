@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 
@@ -32,8 +31,8 @@ class Nave(ObjetoDoJogo):
     """
         Classe Nave
         -----------
-        Implementa a nave com aceleraÁ„o vetorial (x,y)
-        Faz o tratamento de colis„o e evita objetos chamados "tiro"
+        Implementa a nave com acelera√ß√£o vetorial (x,y)
+        Faz o tratamento de colis√£o e evita objetos chamados "tiro"
     """
     def __init__(self, nome, pos, imagem=None, tipo="JOGADOR"):
         ObjetoDoJogo.__init__(self,nome, pos, imagem, tipo)
@@ -60,7 +59,7 @@ class Nave(ObjetoDoJogo):
             self.misseis += objeto.carga
         elif objeto.nome == "CaixaDeResistencia":
             self.resistencia += objeto.carga
-        elif objeto.nome != "tiro": #Evita colidir com os prÛprios mÌsseis
+        elif objeto.nome != "tiro": #Evita colidir com os pr√≥prios m√≠sseis
             ObjetoDoJogo.colida(self,objeto)
 
     def respire(self):

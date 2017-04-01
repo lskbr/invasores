@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 
@@ -25,18 +24,18 @@ class ObjetoDoJogo:
         Classe ObjetoDoJogo
         -------------------
         Implementa os objetos do universo.
-        nome È utilizada para identificar um grupo de objetos
-        pos È a posicao inicial do objeto
-        imagem È a figura que representara este objeto.
-        ix, iy s„o o incremento x e y aplicados durante a respiraÁ„o
-        lx, ly È a largura e altura da imagem em pontos
-        dano È o valor subtraido quando algo colide com este objeto
-        resistencia È o valor que quando zerado retira o objeto do jogo
-        estado vari·vel utilizada para controlar estados e principalmente
+        nome √© utilizada para identificar um grupo de objetos
+        pos √© a posicao inicial do objeto
+        imagem √© a figura que representara este objeto.
+        ix, iy s√£o o incremento x e y aplicados durante a respira√ß√£o
+        lx, ly √© a largura e altura da imagem em pontos
+        dano √© o valor subtraido quando algo colide com este objeto
+        resistencia √© o valor que quando zerado retira o objeto do jogo
+        estado vari√°vel utilizada para controlar estados e principalmente
             troca de imagens
-        visivel indica se o objeto deve ou n„o ser desenhado
+        visivel indica se o objeto deve ou n√£o ser desenhado
         universo aponta para o universo ao qual este objeto pertence
-            seu valor È setado pela classe Universo no momento da inclus„o
+            seu valor √© setado pela classe Universo no momento da inclus√£o
     """
     def __init__(self, nome, pos, imagem=None, tipo=None):
         self.nome = nome

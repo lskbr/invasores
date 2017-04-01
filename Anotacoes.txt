@@ -1,9 +1,9 @@
-Versão inicial programada em 21/09/2003
-Em 22/09/2003 versão 0.5 enviada para o Gamessa
+VersÃ£o inicial programada em 21/09/2003
+Em 22/09/2003 versÃ£o 0.5 enviada para o Gamessa
 
 Coisas a melhorar:
-- Animação
-- Vários tipos de inimigos
+- AnimaÃ§Ã£o
+- VÃ¡rios tipos de inimigos
 - Som
 - Feedback do teclado
 - Placar - usar mais cores
@@ -23,7 +23,7 @@ pygame.mouse.set_visible(0)
 
 No setcolorkey: RLEACCEL
 
-pygame.display.set_mode(size, [flags, [depth]]) -> Surface 
+pygame.display.set_mode(size, [flags, [depth]]) -> Surface
 HWPALETTE, DOUBLEBUF, and/or FULLSCREEN
 HWSURFACE - surface in hardware video memory. (equal to 1)
 RESIZABLE - display window is resizeable

@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 
@@ -19,26 +18,29 @@
 #	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import pygame.mixer
+import sys
+from typing import Dict
+
 
 try:
     pygame.mixer.init()
     inicializado = 1
 except:
-    print("Sound initialization failure.")
+    print("Sound initialization failure.", file=sys.stderr)
     inicializado = 0
 
-sons = {}
+sons = {}  # type: Dict[str, pygame.mixer.Sound]
 
-def carregue(nome,local):
+def carregue(nome :str, local:str):
   global sons
-  if not sons.has_key(nome):
+  if nome not in sons:
      try:
        sons[nome] = pygame.mixer.Sound(local)
        return sons[nome]
      except:
        return None
 
-def reproduza(nome):
+def reproduza(nome :str):
 	global sons
 	try:
 		sons[nome].play()
@@ -47,7 +49,7 @@ def reproduza(nome):
 
 def canais(nome=None):
     global sons
-    if nome == None:
+    if nome is None:
         try:
             return pygame.mixer.get_num_channels()
         except:

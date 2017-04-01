@@ -1,8 +1,8 @@
-# -*- coding: cp1252 -*-
+from typing import Dict
 
 class traducao:
     lingua = "pt"
-    dicionario = {}
+    dicionario = {}  # type: Dict[str, str]
     def __init__(self, prefixo):
         self.lingua = prefixo
         self.carregaDicionario("lang/%s.lang" % self.lingua)

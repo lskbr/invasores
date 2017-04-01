@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 
@@ -16,13 +15,13 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with Invasores; if not, write to the Free Software
-#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA           
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 from objetodojogo import *
 
 class ObjetosBonus(ObjetoDoJogo):
     """
-        Classe utilizada para representar os objetos de recarga de munição ou resistência
+        Classe utilizada para representar os objetos de recarga de muniÃ§Ã£o ou resistÃªncia
     """
     def __init__(self, nome, pos, imagem=None,tipo="INIMIGO"):
         ObjetoDoJogo.__init__(self,nome, pos, imagem,tipo)
@@ -31,7 +30,7 @@ class ObjetosBonus(ObjetoDoJogo):
         self.resistencia = 1000
         self.dano = 0
         self.carga = 0
-        
+
     def respire(self):
         ObjetoDoJogo.respire(self)
         self.pos[1] += self.iy
@@ -42,7 +41,7 @@ class ObjetosBonus(ObjetoDoJogo):
                 self.universo.objetos.remove(self)
             except:
                 pass
-                
+
     def colida(self, objeto):
         if objeto.nome == "Nave":
             self.resistencia = 0

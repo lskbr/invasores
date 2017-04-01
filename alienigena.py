@@ -1,4 +1,3 @@
-# -*- coding: cp1252 -*-
 # Invasores
 # Escrito por: Nilo Menezes (nilo at nilo dot pro dot br)
 
@@ -28,7 +27,7 @@ import som
 
 class Alienigena(ObjetoDoJogo):
     alienigenas_vivos = 0
-    
+
     def __init__(self, nome, pos, imagem, tipo="INIMIGO"):
         #ObjetoDoJogo.__init__(self,nome, pos, imagem, tipo)
         ObjetoDoJogo.__init__(self,nome, [pos[0],pos[1]-200], imagem, tipo)
@@ -65,7 +64,7 @@ class Alienigena(ObjetoDoJogo):
         if self.resistencia<=0:
             som.reproduza("ALIENIGENA_EXP")
             Alienigena.alienigenas_vivos -=1
-            
+
         if self.pos[1]<self.posical_final:
             self.iy=10
         else:

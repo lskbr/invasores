@@ -2,4 +2,5 @@ mypy==0.501
 pygame==1.9.3
 sphinx==1.5.5
 sphinx-autobuild==0.6.0
+py2exe-0.9.2.2
 

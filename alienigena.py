@@ -30,7 +30,7 @@ class Alienigena(ObjetoDoJogo):
     alienigenas_vivos = 0
 
     def __init__(self, nome, pos, imagem, tipo="INIMIGO"):
-        ObjetoDoJogo.__init__(self, nome, [pos[0], pos[1] - 200], imagem, tipo)
+        super().__init__(nome, [pos[0], pos[1] - 200], imagem, tipo)
         self.iy = 3 + naleatorios.faixa(0, 5)
         self.ix = 3 + naleatorios.faixa(0, 5)
         self.posical_final = pos[1]
@@ -53,7 +53,7 @@ class Alienigena(ObjetoDoJogo):
         self.iy = self.script_movimento[self.pos_script][1]
 
     def respire(self):
-        ObjetoDoJogo.respire(self)
+        super().respire()
         if self.resistencia <= 0:
             som.reproduza("ALIENIGENA_EXP")
             Alienigena.alienigenas_vivos -= 1

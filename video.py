@@ -44,10 +44,6 @@ def imagem(nome):
 
 
 class Imagem:
-    imagem = None  # type: object
-    lx = 0
-    ly = 0
-
     def __init__(self, nome, local):
         self.carregue_imagem(nome, local)
 

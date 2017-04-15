@@ -116,7 +116,7 @@ class Invasores:
         self.carregue_imagens()
         self.sair = None
         self.jogador = Nave("Nave", [400, 400], self.iJogador)
-        self.placar = Score("Placar", [0, 0])
+        self.placar = ScoreComFPS("Placar", [0, 0])
         self.placar.jogador = self.jogador
         self.universo.quadros = 30
         self.universo.calcule_pontos = self.calcula_pontos
@@ -210,15 +210,6 @@ class Invasores:
             if Alienigena.alienigenas_vivos == 0:
                 self.estado_tempo_script = 0
 
-    def controle_joystick(self):
-        pass
-
-    def controle_mouse(self):
-        pass
-
-    def controle_teclado(self):
-        pass
-
     def nova_partida(self):
         self.jogador.resistencia = 300
         self.jogador.misseis = 300
@@ -275,7 +266,7 @@ class Invasores:
         self.universo.escreva([-1, 450], traducao.pega("pressionequalquertecla"), (255, 255, 0), 24)
         self.universo.escreva([-1, 200], "[P]Português [E]English [S]Spañol [F]Français", (255, 255, 0), 24)
         self.universo.atualize()
-        while 1:
+        while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     return(1)
@@ -283,16 +274,12 @@ class Invasores:
                     teclas = pygame.key.get_pressed()
                     if teclas[K_p]:
                         traducao.dicionario("pt_br")
-
                     if teclas[K_e]:
                         traducao.dicionario("en")
-
                     if teclas[K_s]:
                         traducao.dicionario("es")
-
                     if teclas[K_f]:
                         traducao.dicionario("fr")
-
                     self.nova_partida()
                     return(0)
 
@@ -303,18 +290,18 @@ class Invasores:
         while True:
             for event in pygame.event.get():
                 if event.type == QUIT:
-                    return(1)
+                    return True
                 if event.type == KEYDOWN:
                     teclas = pygame.key.get_pressed()
                     if teclas[K_r]:
-                        return(0)
+                        return 0
                     elif teclas[K_x]:
-                        return(1)
+                        return True
                 if event.type == JOYBUTTONDOWN:
                     if event.button % 2 == 0:
-                        return(0)
+                        return False
                     else:
-                        return(1)
+                        return True
 
     def movemouse(self, evento):
         if evento.rel[0] < -self.sensibilidade_mouse:
@@ -365,9 +352,11 @@ class Invasores:
         self.jogador.move(2)
 
     def aumentamisseis(self):
+        """Cheat para aumentar o número de mísseis do jogador em 1000"""
         self.jogador.misseis += 1000
 
     def aumentaresistencia(self):
+        """Cheat para aumentar a resistência do jogador em 1000 pontos"""
         self.jogador.resistencia += 1000
 
     def inicializa_comandos(self):
@@ -408,6 +397,11 @@ class Invasores:
             return True
 
     def repeticao_do_jogo(self):
+        """
+        Loop principal do jogo.
+        Apaga a tela, carrega a fase e repete até o jogador morrer ou escolher para sair.
+
+        """
         self.universo.desenhe_fundo()
         self.sair = False
         self.carrega_fase()
@@ -415,59 +409,69 @@ class Invasores:
         while self.jogador.resistencia > 0 and not self.sair:
             self.frame += 1
             self.incrementa_tempo_script()
-            self.universo.inicie_sincronia()
-
-            while 1:
+            while True:
                 event = pygame.event.poll()
                 if event.type == NOEVENT:
                     break
                 if event.type in self.eventos:
                     self.eventos[event.type](event)
 
+            # Pega todas as teclas pressionadas no momento
             teclas = pygame.key.get_pressed()
+            # Verifica se cada tecla com comando foi pressionada
             for comando in self.comandos.keys():
                 if teclas[comando]:
+                    # Chama o gerenciador da tecla
                     self.comandos[comando]()
-
+            # Processa as instruções da fase
             if self.script[pos_script][0] <= self.tempo_script:
                 exec(self.script[pos_script][1])
                 pos_script += 1
                 if pos_script == len(self.script):
                     pos_script = 0
                     if not self.avanca_fase():
-                        return(0)
+                        return 0
 
             self.universo.desenhe_fundo()
             self.universo.desenhe_objetos()
             self.universo.atualize()
-            # print "A=%d F=%d ST=%d" % (Alienigena.alienigenas_vivos, self.frame, self.tempo_script)
             self.universo.finalize_sincronia()
 
         self.universo.desenhe_fundo()
         self.placar.respire()
         self.universo.desenhe_objetos()
         self.universo.atualize()
-        if self.sair:
-            return(1)
-        else:
-            return(0)
+        return self.sair
+
 
 # Jogo - Principal
-
-
 def jogo():
+    """
+    Cria o loop do jogo. Alterna entre os três estados principais do invasores:
+
+    - :meth:`Invasores.tela_inicial`
+
+    - :meth:`Invasores.repeticao_do_jogo`
+
+    - :meth:`Invasores.tela_fim_de_jogo`
+
+    O usuário pode pressionar X para sair em qualquer tela.
+    """
     try:
         # Cria o jogo em uma janela de 800x600
         jogo = Invasores([800, 600])
+        # Esconde o mouse
         pygame.mouse.set_visible(0)
         # Loop principal do Jogo
-        while 1:
+        while True:
             if jogo.tela_inicial():
                 break
+            # Ativa captura eventos
             pygame.event.set_grab(1)
             jogo.nova_partida()
             if jogo.repeticao_do_jogo():
                 break
+            # Desativa captura eventos
             pygame.event.set_grab(0)
             if jogo.tela_fim_de_jogo():
                 break
@@ -476,6 +480,7 @@ def jogo():
 
 
 if __name__ == "__main__":
+    # Carrega o dicionário padrão, no caso, Português do Brasil
     traducao.dicionario("pt_br")
     # traducao.dicionario("en")
 

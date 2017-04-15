@@ -25,18 +25,6 @@ from typing import List, Dict, Tuple, Callable
 from objetodojogo import ObjetoDoJogo
 
 
-def colide(a, b):
-    """ Verifica a colisao de dois retangulos"""
-    if a[0] > b[0]:
-        a, b = b, a
-    if a[2] > b[0] and (a[2] > b[0] or a[2] > b[2]):
-        if a[1] > b[1]:
-            a, b = b, a
-        if a[3] > b[1] or a[3] > b[3]:
-            return True
-    return False
-
-
 class Universo:
     """
         Responsável pela manutenção do conjunto de objetos do jogo (:py:class:`objetodojogo.ObjetoDoJogo`).
@@ -44,7 +32,7 @@ class Universo:
         de cada objeto, rotina de cálculo de pontos e também gerando o fundo de estrelas.
 
     """
-    def __init__(self, dimensao: Tuple[int, int], quadros: int=30) -> None:
+    def __init__(self, dimensao: Tuple[int, int], quadros: int=60) -> None:
         """
         Inicializa o universo com valores
         :param tuple dimensao: tupla com a largura e altura da tela em pixels
@@ -62,8 +50,11 @@ class Universo:
         self.calcule_pontos = None  # type: Callable[[ObjetoDoJogo, ObjetoDoJogo], int]
         self.gere_estrelas()
         self.intensidade_estrelas = 0
+        self.clock = pygame.time.Clock()
 
     def reconfigura_video(self, mensagem: int):
+        """Usado para trocar de resolução. Atualiza os limites do universo,
+           gera novas estrelas."""
         if mensagem == 0:
             # Mudança de resolução
             self.largura = self.video.dimensao[0]
@@ -84,6 +75,7 @@ class Universo:
             self.estrelas.append(rect)
 
     def adicione(self, objeto: ObjetoDoJogo):
+        """Adiciona um objeto à lista de desenho."""
         self.objetos.append(objeto)
         objeto.universo = self
         if objeto.tipo is not None:
@@ -93,59 +85,76 @@ class Universo:
                 self.colisoes[objeto.tipo] = [objeto]
 
     def remova(self, objeto: ObjetoDoJogo):
+        """Retira um objeto da lista de desenho e da lista de colisões"""
         if objeto.tipo is not None:
             self.colisoes[objeto.tipo].remove(objeto)
         self.objetos.remove(objeto)
 
-    def desenhe(self, posicao, imagem):
+    def __centraliza_x(self, imagem) -> int:
+        """Centraliza imagem na tela"""
+        return (self.largura - imagem.get_width()) / 2
+
+    def __centraliza_y(self, imagem) -> int:
+        """Centraliza imagem verticalmente na tela"""
+        return (self.altura - imagem.get_height()) / 2
+
+    def desenhe(self, posicao: List[int], imagem):
+        """Desenha a imagem na posição x, y indicada"""
         if posicao[0] == -1:
-            posicao[0] = (self.largura - imagem.get_width()) / 2
+            posicao[0] = self.__centraliza_x(imagem)
         if posicao[1] == -1:
-            posicao[1] = (self.altura - imagem.get_height()) / 2
+            posicao[1] = self.__centraliza_y(imagem)
         self.video.desenhe(imagem, posicao)
 
-    def escreva(self, posicao, texto, cor, tamanho=None):
+    def escreva(self, posicao: List[int], texto, cor, tamanho=None):
+        """Escreve uma mensagem de texto na posição x, y passada.
+           Se uma das posições for igual a -1, centraliza no eixo específico"""
         if tamanho is not None:
             self.video.fonte(tamanho)
         imagem = self.video.texto(texto, cor)
         if posicao[0] == -1:
-            posicao[0] = (self.largura - imagem.get_width()) / 2
+            posicao[0] = self.__centraliza_x(imagem)
         if posicao[1] == -1:
-            posicao[1] = (self.altura - imagem.get_height()) / 2
+            posicao[1] = self.__centraliza_y(imagem)
         self.desenhe(posicao, imagem)
 
     def desenhe_fundo(self):
+        """Apaga a tela e desenha as estrelas"""
         self.video.limpe()
         for estrela in self.estrelas:
             intensidade = 100 + self.intensidade_estrelas * 2 % 50
             cor = [intensidade, intensidade, intensidade]
             # (255,255,100)
             pygame.draw.rect(self.video.tela, cor, estrela, 0)
-            estrela[1] += 3
-            if estrela[1] > self.altura:
-                estrela[1] = 0
+            # Mode a estrela para baixo para dar ideia de movimento
+            estrela.y += 3
+            # Se a estrela estiver fora da tela, reposiciona na primeira linha
+            if estrela.y > self.altura:
+                estrela.y = 0
             self.intensidade_estrelas = self.intensidade_estrelas + 1
 
     def desenhe_objetos(self):
+        """Desenha a lista de objetos na tela"""
         [self.video.tela.blit(objeto.imagem, objeto.pos)
             for objeto in self.objetos if objeto.visivel]
         self.teste_colisao()
 
     def atualize(self):
+        """Atualiza o estado do jogo, chamando o método :meth:`ObjetoDoJogo.respire`
+           de todos os objetos na lista de desenho."""
         [objeto.respire() for objeto in self.objetos]
         self.video.atualize()
 
-    def inicie_sincronia(self):
-        self.inicio = pygame.time.get_ticks()
-
     def finalize_sincronia(self):
-        pygame.time.delay(int(1000 / self.quadros - (pygame.time.get_ticks() - self.inicio)))
+        """Espera o fim do frame atual."""
+        self.clock.tick_busy_loop(self.quadros)
 
     def teste_colisao(self):
         colisoes = list(self.colisoes.keys())
-        for x in range(len(colisoes) - 1):
-            for objetoA in self.colisoes[colisoes[x]]:
-                for y in range(x + 1, len(colisoes)):
-                    for objetoB in self.colisoes[colisoes[y]]:
-                        if colide(objetoA.retangulo(), objetoB.retangulo()):
+        while colisoes:
+            A = colisoes.pop()
+            for objetoA in self.colisoes[A]:
+                for B in colisoes:
+                    for objetoB in self.colisoes[B]:
+                        if objetoA.rect.colliderect(objetoB.rect):
                             self.score += self.calcule_pontos(objetoA, objetoB)

@@ -22,6 +22,19 @@ from pygame.locals import *
 from typing import Tuple
 
 
+class Posicao2D:
+    def __init__(x, y):
+        self.x = x
+        self.y = y
+
+    def add(self, ix, iy):
+        self.x += ix
+        self.y += iy
+
+    def tuple(self):
+        return (self.x, self.y)
+
+
 class ObjetoDoJogo:
     """
         Implementa os objetos do universo.
@@ -66,9 +79,11 @@ class ObjetoDoJogo:
         #: seu valor é setado pela classe Universo no momento da inclusão
         self.universo = None
         self.tipo = tipo
+        self.rect = self.makeRect()
 
     @property
     def imagem(self):
+        """Bitmap usado para desenhar este objeto"""
         return self.__imagem
 
     @imagem.setter
@@ -92,14 +107,28 @@ class ObjetoDoJogo:
             # self.universo.objetos.remove(self)
             if self.universo is not None:
                 self.universo.remova(self)
+        self.rect = self.makeRect()
 
-    def carregue_imagem(self, nome: str):
+    def carregue_imagem(self, nome: str) -> None:
         self.imagem = pygame.image.load(nome).convert()
 
-    def move(self, direcao):
-        pass
+    def move(self, direcao: int):
+        """
+        Move o objeto, na direção indicada.
 
-    def teste_colisao(self):
+        Observar que direção é um int!
+
+        - 0 - direita
+
+        - 1 - esquerda
+
+        - 2 - para baixo
+
+        - 3 - para cima
+
+        A implementação deste método é responsável por fazer os ajustes de velocidade
+        e posição necessários.
+        """
         pass
 
     def colida(self, objeto):
@@ -113,7 +142,7 @@ class ObjetoDoJogo:
         if objeto.nome != self.nome:
             self.resistencia -= objeto.dano
 
-    def rect(self) -> pygame.Rect:
+    def makeRect(self) -> pygame.Rect:
         """Retorna um retângulo com as dimensões deste objeto"""
         return pygame.Rect(self.pos[0], self.pos[1], self.lx, self.ly)
 

@@ -150,6 +150,7 @@ class Universo:
         self.clock.tick_busy_loop(self.quadros)
 
     def teste_colisao(self):
+        """Verifica se objetos de classes diferentes colidem uns com os outros"""
         colisoes = list(self.colisoes.keys())
         while colisoes:
             A = colisoes.pop()

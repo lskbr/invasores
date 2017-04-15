@@ -152,46 +152,48 @@ class Invasores:
         self.universo.adicione(texto)
 
     def fase1(self):
-        self.script = [[0, """self.mostra_texto("fase1") """],
-                       [30, "self.cria_alienigena(100,50, 4, 3, [(3,0,120),(-3,1,120),(3,0,120),(-3,2,120)] )"],
-                       [31, "self.cria_alienigena(400,50, 4, 3, [(5,1,120),(-5,0,120),(8,-1,120),(-5,2,120)] )"],
-                       [250, "self.cria_municao()"],
-                       [295, "self.para_tempo_script(1)"],
-                       [300, "self.cria_alienigena(100,50, 10, 2, [(3,0,120),(-3,1,120),(3,0,120),(-3,2,120)] )"],
-                       [450, "self.cria_municao()"],
-                       [495, "self.para_tempo_script(1)"],
-                       [500, "self.cria_alienigena(100,50, 10, 4, [(4,0,120),(-4,1,120),(4,0,120),(-4,2,120)] )"],
-                       [700, "self.cria_resistencia()"],
-                       [720, "self.cria_municao()"],
-                       [895, "self.para_tempo_script(1)"],
-                       [800, "self.cria_alienigena(100,50, 12, 4, [(5,0,120),(-5,1,120),(5,0,120),(-5,2,120)] )"],
-                       [810, "self.cria_municao()"],
-                       [850, "self.cria_municao()"],
-                       [895, "self.para_tempo_script(1)"],
-                       [900, ""]]
+        self.script = [
+            [0, self.mostra_texto, "fase1"],
+            [30, self.cria_alienigena, 100, 50, 4, 3, [(3, 0, 120), (-3, 1, 120), (3, 0, 120), (-3, 2, 120)]],
+            [31, self.cria_alienigena, 400, 50, 4, 3, [(5, 1, 120), (-5, 0, 120), (8, -1, 120), (-5, 2, 120)]],
+            [250, self.cria_municao],
+            [295, self.para_tempo_script, 1],
+            [300, self.cria_alienigena, 100, 50, 10, 2, [(3, 0, 120), (-3, 1, 120), (3, 0, 120), (-3, 2, 120)]],
+            [450, self.cria_municao],
+            [495, self.para_tempo_script, 1],
+            [500, self.cria_alienigena, 100, 50, 10, 4, [(4, 0, 120), (-4, 1, 120), (4, 0, 120), (-4, 2, 120)]],
+            [700, self.cria_resistencia],
+            [720, self.cria_municao],
+            [895, self.para_tempo_script, 1],
+            [800, self.cria_alienigena, 100, 50, 12, 4, [(5, 0, 120), (-5, 1, 120), (5, 0, 120), (-5, 2, 120)]],
+            [810, self.cria_municao],
+            [850, self.cria_municao],
+            [895, self.para_tempo_script, 1],
+            [900, None]]
 
     def fase2(self):
-        self.script = [[0, """self.mostra_texto("fase2")"""],
-                       [100, "self.cria_alienigena(100,100, 6, 4, [(5,3,120),(-3,1,120),(3,-1,120),(-5,-2,120)] )"],
-                       [250, "self.cria_municao()"],
-                       [295, "self.para_tempo_script(1)"],
-                       [300, "self.cria_alienigena(100,100, 8, 6, [(5,0,120),(-3,1,120),(3,0,120),(-5,2,120)] )"],
-                       [450, "self.cria_municao()"],
-                       [590, "self.para_tempo_script(1)"],
-                       [600, "self.cria_alienigena(100,100, 8, 6, [(4,0,120),(-4,1,120),(4,0,120),(-4,2,120)] )"],
-                       [700, "self.cria_resistencia()"],
-                       [895, "self.para_tempo_script(1)"],
-                       [900, "self.cria_alienigena(100,100, 10, 6, [(6,0,120),(-6,1,120),(6,0,120),(-6,2,120)] )"],
-                       [1199, "self.para_tempo_script(1)"],
-                       [1200, """self.mostra_texto("venceu")"""],
-                       [1500, "self.saida()"]]
+        self.script = [
+            [0, self.mostra_texto, "fase2"],
+            [100, self.cria_alienigena, 100, 100, 6, 4, [(5, 3, 120), (-3, 1, 120), (3, -1, 120), (-5, -2, 120)]],
+            [250, self.cria_municao],
+            [295, self.para_tempo_script, 1],
+            [300, self.cria_alienigena, 100, 100, 8, 6, [(5, 0, 120), (-3, 1, 120), (3, 0, 120), (-5, 2, 120)]],
+            [450, self.cria_municao],
+            [590, self.para_tempo_script, 1],
+            [600, self.cria_alienigena, 100, 100, 8, 6, [(4, 0, 120), (-4, 1, 120), (4, 0, 120), (-4, 2, 120)]],
+            [700, self.cria_resistencia],
+            [895, self.para_tempo_script, 1],
+            [900, self.cria_alienigena, 100, 100, 10, 6, [(6, 0, 120), (-6, 1, 120), (6, 0, 120), (-6, 2, 120)]],
+            [1199, self.para_tempo_script, 1],
+            [1200, self.mostra_texto, "venceu"],
+            [1500, self.saida]]
 
     def faseT(self):
-        self.script = [[0, """self.mostra_texto("fase1") """],
-                       [5, """self.faseTCriaalienigena()"""],
-                       [200, """self.faseTCriaalienigena()"""],
-                       [400, """self.faseTCriaalienigena()"""],
-                       [1400, "self.saida()"]]
+        self.script = [[0, self.mostra_texto, "fase1"],
+                       [5, self.faseTCriaalienigena],
+                       [200, self.faseTCriaalienigena],
+                       [400, self.faseTCriaalienigena],
+                       [1400, self.saida]]
 
     def cria_alienigena(self, xi, yi, c, l, script, xl=60, yl=60):
         for y in range(l):
@@ -424,8 +426,11 @@ class Invasores:
                     # Chama o gerenciador da tecla
                     self.comandos[comando]()
             # Processa as instruções da fase
+            tempo, funcao, *parametros = self.script[pos_script]
             if self.script[pos_script][0] <= self.tempo_script:
-                exec(self.script[pos_script][1])
+                if funcao:
+                    funcao(*parametros)
+                #exec(self.script[pos_script][1])
                 pos_script += 1
                 if pos_script == len(self.script):
                     pos_script = 0

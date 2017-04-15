@@ -2,7 +2,9 @@
 
 Abaixo a página original da Wiki, portada para o GitHub.
 
-O projeto continua vivo. A versão atual foi testada com Python 3.6.
+O projeto continua vivo. A versão atual foi testada com Python 3.6. Aos poucos eu iriei documentando e modernizando o código.
+
+Documentação disponível em: http://invasores.readthedocs.io/pt_BR/latest/index.html
 
 
 ## Situação do Projeto
@@ -22,6 +24,12 @@ Invasores utiliza Python e PyGame sendo multiplataforma por definição. O jogo 
 * Instalação Mac OS X
 
 * Instalação FreeBSD
+```
+    git clone https://github.com/lskbr/invasores
+    cd invasores
+    pip install -r requirements.txt
+    python invasores
+```
 
 ## Ajuda
 
@@ -68,7 +76,7 @@ Em 2003, a FPF começou a trabalhar com J2ME e com isso mais pessoas se juntaram
 
 Eu escolhi Python e fiz o primeiro release, a versão 0.5, em 22/09/2003. De lá para cá, o jogo melhorou bastante, principalmente os gráficos e a própria engine. Observando o processo de desenvolvimento, fica claro que o uso da Pygame foi melhorando com o tempo, a cada versão novas funcionalidades da biblioteca foram sendo utilizadas.
 
-Em 2005, um processo de divulgação foi iniciado, visando atrair colaboradores. Invasores é cadastrado no diretório de software da FSF [1]. Todo lançamento é divulgado também no Freshmeat [2]. Uma notícia também foi divulgada no Notícias Linux [3]. Também houve uma apresentação sobre o jogo no III ESLAM (Encontro de Software Livre do Amazonas) que poder ser baixada PythonEPygame.pdf.
+Em 2005, um processo de divulgação foi iniciado, visando atrair colaboradores. Invasores é cadastrado no diretório de software da FSF. Todo lançamento é divulgado também no ~~Freshmeat~~. Uma notícia também foi divulgada no [Notícias Linux](http://www.noticiaslinux.com.br/nl1119320126.html). Também houve uma apresentação sobre o jogo no III ESLAM (Encontro de Software Livre do Amazonas) que poder ser baixada [PythonEPygame.pdf](http://nilo.pro.br/python/PythonEPygame.pdf).
 
 Ainda há muito por vir...
 

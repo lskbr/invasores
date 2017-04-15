@@ -21,8 +21,10 @@ import random
 
 
 def faixa(inicio, fim=None):
+    """Gera um número aleatório entre inicio e fim"""
     return random.randrange(inicio, fim)
 
 
 def pega():
+    """Retorna um número aleatório entre 0 e 1"""
     return random.random()

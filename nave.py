@@ -19,10 +19,9 @@
 
 from objetodojogo import *
 
-# Retorna o sinal de um nimero
-
 
 def sinal(x):
+    """Retorna o sinal de um nimero"""
     if x != 0:
         return x / abs(x)
     else:
@@ -31,14 +30,11 @@ def sinal(x):
 
 class Nave(ObjetoDoJogo):
     """
-        Classe Nave
-        -----------
         Implementa a nave com aceleração vetorial (x,y)
         Faz o tratamento de colisão e evita objetos chamados "tiro"
     """
-
     def __init__(self, nome, pos, imagem=None, tipo="JOGADOR"):
-        ObjetoDoJogo.__init__(self, nome, pos, imagem, tipo)
+        super().__init__(nome, pos, imagem, tipo)
         self.resistencia = 300
         self.dano = 10
         self.misseis = 300
@@ -63,10 +59,10 @@ class Nave(ObjetoDoJogo):
         elif objeto.nome == "CaixaDeResistencia":
             self.resistencia += objeto.carga
         elif objeto.nome != "tiro":  # Evita colidir com os próprios mísseis
-            ObjetoDoJogo.colida(self, objeto)
+            super().colida(objeto)
 
     def respire(self):
-        ObjetoDoJogo.respire(self)
+        super().respire()
         self.pos[0] += self.ix
         self.pos[1] += self.iy
         if self.pos[0] + self.lx > self.universo.largura or self.pos[0] < 0:

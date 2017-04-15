@@ -81,15 +81,17 @@
 # Módulos do PyGame
 
 import pygame
-
 import pygame.joystick
-
 from pygame.locals import *
 
 # Módulos do Python
 
 
 # Módulos do jogo
+import traducao
+import video
+import naleatorios
+
 from universo import *
 from objetodojogo import *
 from nave import *
@@ -98,19 +100,11 @@ from laser import *
 from alienigena import *
 from score import *
 
-import traducao
-
-import video
-import som
-import naleatorios
-
 
 class Invasores:
     """
-        Classe Invasores
-        ----------------
         Esta classe é responsavel pelo jogo em si.
-        Toda customizacao deve ser feita aqui
+        Toda customização deve ser feita aqui
     """
 
     def __init__(self, tela):
@@ -481,8 +475,9 @@ def jogo():
         pygame.display.quit()
 
 
-# traducao.dicionario("pt_br")
-traducao.dicionario("en")
+if __name__ == "__main__":
+    traducao.dicionario("pt_br")
+    # traducao.dicionario("en")
 
-jogo()
-# profile.run("jogo()")
+    jogo()
+    # profile.run("jogo()")

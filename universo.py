@@ -18,13 +18,15 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-from video import *
-
 import naleatorios
 
+from video import *
+from typing import List, Dict, Tuple, Callable
+from objetodojogo import ObjetoDoJogo
 
-# Verifica a colisao de dois retangulos
+
 def colide(a, b):
+    """ Verifica a colisao de dois retangulos"""
     if a[0] > b[0]:
         a, b = b, a
     if a[2] > b[0] and (a[2] > b[0] or a[2] > b[2]):
@@ -37,35 +39,43 @@ def colide(a, b):
 
 class Universo:
     """
-        Classe Universo
-        ============
-        Responsável pela manutenção do conjunto de objetos do jogo.
+        Responsável pela manutenção do conjunto de objetos do jogo (:py:class:`objetodojogo.ObjetoDoJogo`).
         Esta classe varre sua lista de objetos, chamando o método de respiração
         de cada objeto, rotina de cálculo de pontos e também gerando o fundo de estrelas.
-    """
 
-    def __init__(self, dimensao):
-        self.objetos = []
-        self.colisoes = {}
+    """
+    def __init__(self, dimensao: Tuple[int, int], quadros: int=30) -> None:
+        """
+        Inicializa o universo com valores
+        :param tuple dimensao: tupla com a largura e altura da tela em pixels
+        :param int quadros: quadros por segundo
+        """
+        #: lista de objetos do jogo
+        self.objetos = []  # type: List[ObjetoDoJogo]
+        self.colisoes = {}  # type: Dict[str,List]
         self.video = Video(dimensao)
         self.video.adicione(self.reconfigura_video)
-        self.quadros = 30
+        self.quadros = quadros
         self.largura = dimensao[0]
         self.altura = dimensao[1]
         self.score = 0
-        self.calcule_pontos = None
+        self.calcule_pontos = None  # type: Callable[[ObjetoDoJogo, ObjetoDoJogo], int]
         self.gere_estrelas()
         self.intensidade_estrelas = 0
 
-    def reconfigura_video(self, mensagem):
+    def reconfigura_video(self, mensagem: int):
         if mensagem == 0:
             # Mudança de resolução
             self.largura = self.video.dimensao[0]
             self.altura = self.video.dimensao[1]
             self.gere_estrelas()
 
-    def gere_estrelas(self):
-        self.estrelas = []
+    def gere_estrelas(self) -> None:
+        """Gera aleatoriamente as estrelas do fundo.
+           As coordenadas x e y de cada estrela são escolhidas aleatoriamente e representão a posição da estrela.
+           z é o tamanho da estrela.
+        """
+        self.estrelas = []  # type: pygame.Rect
         for i in range(60):
             x = naleatorios.faixa(1, self.largura)
             y = naleatorios.faixa(1, self.altura)
@@ -73,7 +83,7 @@ class Universo:
             rect = pygame.Rect(x, y, z, z)
             self.estrelas.append(rect)
 
-    def adicione(self, objeto):
+    def adicione(self, objeto: ObjetoDoJogo):
         self.objetos.append(objeto)
         objeto.universo = self
         if objeto.tipo is not None:
@@ -82,7 +92,7 @@ class Universo:
             else:
                 self.colisoes[objeto.tipo] = [objeto]
 
-    def remova(self, objeto):
+    def remova(self, objeto: ObjetoDoJogo):
         if objeto.tipo is not None:
             self.colisoes[objeto.tipo].remove(objeto)
         self.objetos.remove(objeto)
@@ -117,14 +127,12 @@ class Universo:
             self.intensidade_estrelas = self.intensidade_estrelas + 1
 
     def desenhe_objetos(self):
-        for objeto in self.objetos:
-            if objeto.visivel:
-                self.video.tela.blit(objeto.imagem, objeto.pos)
+        [self.video.tela.blit(objeto.imagem, objeto.pos)
+            for objeto in self.objetos if objeto.visivel]
         self.teste_colisao()
 
     def atualize(self):
-        for objeto in self.objetos:
-            objeto.respire()
+        [objeto.respire() for objeto in self.objetos]
         self.video.atualize()
 
     def inicie_sincronia(self):

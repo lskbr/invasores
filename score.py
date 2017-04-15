@@ -28,15 +28,13 @@ clock = pygame.time.Clock()
 
 class Score(ObjetoDoJogo):
     """
-        Classe Score
-        ------------
         Utilizada para exibir o score do jogo.
         Implementada como um objeto normal, podendo inclusive suportar
         animação.
     """
 
     def __init__(self, nome, pos=[0, 0]):
-        ObjetoDoJogo.__init__(self, nome, pos)
+        super().__init__(nome, pos)
         self.fonte = pygame.font.Font(None, 30)
         self.fonte.set_bold(True)
         self.jogador = None
@@ -52,8 +50,6 @@ class Score(ObjetoDoJogo):
 
 class Texto(ObjetoDoJogo):
     """
-        Classe Score
-        ------------
         Utilizada para exibir o score do jogo.
         Implementada como um objeto normal, podendo inclusive suportar
         animação.
@@ -74,17 +70,17 @@ class Texto(ObjetoDoJogo):
                         (self.universo.altura - self.imagem.get_height()) / 2]
 
     def respire(self):
-        # ObjetoDoJogo.respire(self)
+        """Decrementa a resistência a cada frame.
+           Com objetivo de fazer o texto sumir após x frames"""
         self.resistencia -= 1
-        ObjetoDoJogo.respire(self)
+        super().respire()
 
 
 class ScoreComFPS(Score):
     def __init__(self, nome, pos):
-        Score.__init__(self, nome, pos)
+        super().__init__(nome, pos)
 
     def respire(self):
-        # ObjetoDoJogo.respire(self)
         clock.tick(60)
         self.imagem = self.fonte.render(traducao.pega("scorefps") %
                                         (self.universo.score,

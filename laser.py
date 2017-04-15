@@ -24,8 +24,6 @@ import som
 
 class Laser(ObjetoDoJogo):
     """
-        Classe Laser
-        ------------
         Implementa os misseis do jogo.
     """
 
@@ -42,7 +40,7 @@ class Laser(ObjetoDoJogo):
         pass
 
     def respire(self):
-        ObjetoDoJogo.respire(self)
+        super().respire()
         self.pos[1] -= self.velocidade
         if self.pos[1] < 0:
             self.visivel = False
@@ -52,9 +50,6 @@ class Laser(ObjetoDoJogo):
             except Exception:
                 pass
 
-    def teste_colisao(self):
-        pass
-
     def colida(self, objeto):
-        if objeto.nome != "Nave":  # Evita colitir com a nave
-            ObjetoDoJogo.colida(self, objeto)
+        if objeto.nome != "Nave":  # Evita colidir com a nave
+            super().colida(objeto)

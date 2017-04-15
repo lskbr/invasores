@@ -1,8 +1,8 @@
-misseis=misseis
-pressionequalquertecla=Pressione qualquer tecla para comecar
+misseis=mísseis
+pressionequalquertecla=Pressione qualquer tecla para começar
 pressionexour=Pressione [X] para sair ou [R] para jogar de novo
-score=Pontos: %d Resistencia: %d Misseis: %d
-scorefps=Pontos: %d Resistencia: %d Misseis: %d FPS: %d
+score=Pontos: %d Resistência: %d Mísseis: %d
+scorefps=Pontos: %d Resistência: %d Mísseis: %d FPS: %d
 fase1=Fase 1
 fase2=Fase 2
-venceu=Voce venceu !
+venceu=Você venceu !

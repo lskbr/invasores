@@ -1,0 +1,5 @@
+mypy==0.501
+pygame==1.9.3
+phinx==1.5.5
+sphinx-autobuild==0.6.0
+

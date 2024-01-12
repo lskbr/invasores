@@ -5,7 +5,7 @@
 #
 #   Invasores is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation; either version 2 of the License, or
+#   the Free Software Foundation; either version 3 of the License, or
 #   (at your option) any later version.
 #
 #   Invasores is distributed in the hope that it will be useful,
@@ -21,16 +21,16 @@
 import pygame
 
 import traducao
-from objetodojogo import *
+from objetodojogo import ObjetoDoJogo
 
 clock = pygame.time.Clock()
 
 
 class Score(ObjetoDoJogo):
     """
-        Utilizada para exibir o score do jogo.
-        Implementada como um objeto normal, podendo inclusive suportar
-        animação.
+    Utilizada para exibir o score do jogo.
+    Implementada como um objeto normal, podendo inclusive suportar
+    animação.
     """
 
     def __init__(self, nome, pos=[0, 0]):
@@ -41,18 +41,19 @@ class Score(ObjetoDoJogo):
 
     def respire(self):
         # ObjetoDoJogo.respire(self)
-        self.imagem = self.fonte.render(traducao.pega("score") %
-                                        (self.universo.score,
-                                         self.jogador.resistencia,
-                                         self.jogador.misseis),
-                                        True, (255, 255, 0, 0))
+        self.imagem = self.fonte.render(
+            traducao.pega("score")
+            % (self.universo.score, self.jogador.resistencia, self.jogador.misseis),
+            True,
+            (255, 255, 0, 0),
+        )
 
 
 class Texto(ObjetoDoJogo):
     """
-        Utilizada para exibir o score do jogo.
-        Implementada como um objeto normal, podendo inclusive suportar
-        animação.
+    Utilizada para exibir o score do jogo.
+    Implementada como um objeto normal, podendo inclusive suportar
+    animação.
     """
 
     def __init__(self, nome, pos, texto, tamanho, tempo, universo, cor):
@@ -66,12 +67,14 @@ class Texto(ObjetoDoJogo):
         self.cor = cor
         self.imagem = self.fonte.render(traducao.pega(self.texto), True, self.cor)
         if self.pos == [-1, -1]:
-            self.pos = [(self.universo.largura - self.imagem.get_width()) / 2,
-                        (self.universo.altura - self.imagem.get_height()) / 2]
+            self.pos = [
+                (self.universo.largura - self.imagem.get_width()) / 2,
+                (self.universo.altura - self.imagem.get_height()) / 2,
+            ]
 
     def respire(self):
         """Decrementa a resistência a cada frame.
-           Com objetivo de fazer o texto sumir após x frames"""
+        Com objetivo de fazer o texto sumir após x frames"""
         self.resistencia -= 1
         super().respire()
 
@@ -82,8 +85,14 @@ class ScoreComFPS(Score):
 
     def respire(self):
         clock.tick(60)
-        self.imagem = self.fonte.render(traducao.pega("scorefps") %
-                                        (self.universo.score,
-                                         self.jogador.resistencia,
-                                         self.jogador.misseis, clock.get_fps()),
-                                        True, (255, 255, 0, 0))
+        self.imagem = self.fonte.render(
+            traducao.pega("scorefps")
+            % (
+                self.universo.score,
+                self.jogador.resistencia,
+                self.jogador.misseis,
+                clock.get_fps(),
+            ),
+            True,
+            (255, 255, 0, 0),
+        )

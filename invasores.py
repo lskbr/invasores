@@ -51,6 +51,13 @@
 #              Modificada posição inicial das naves
 # Versão 0.9.9 - 01/04/2017
 #              Migração para Python 3.6 e GitHub
+# Versão 0.9.10b - 12/01/2024
+#              Migração para Python 3.12
+#              Migração para pygame-ce
+#              Formatação do código, limpeza e conformidade a pep-8
+#              Resolução atualizada para começar com 1024x768 e novo modo HD
+#              Atualização da Licença para GPL v3.0
+
 
 # TODO: limpar o código
 # TODO: reprojetar a engine de controle
@@ -66,7 +73,7 @@
 #
 #   Invasores is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation; either version 2 of the License, or
+#   the Free Software Foundation; either version 3 of the License, or
 #   (at your option) any later version.
 #
 #   Invasores is distributed in the hope that it will be useful,
@@ -82,7 +89,7 @@
 
 import pygame
 import pygame.joystick
-from pygame.locals import *
+import pygame.locals as pg
 
 # Módulos do Python
 
@@ -92,19 +99,20 @@ import traducao
 import video
 import naleatorios
 
-from universo import *
-from objetodojogo import *
-from nave import *
-from objetosbonus import *
-from laser import *
-from alienigena import *
-from score import *
+from universo import Universo
+
+# from objetodojogo import ObjetoDoJogo
+from nave import Nave
+from objetosbonus import ObjetosBonus
+from laser import Laser
+from alienigena import Alienigena
+from score import ScoreComFPS, Texto
 
 
 class Invasores:
     """
-        Esta classe é responsavel pelo jogo em si.
-        Toda customização deve ser feita aqui
+    Esta classe é responsável pelo jogo em si.
+    Toda customização deve ser feita aqui
     """
 
     def __init__(self, tela):
@@ -129,8 +137,8 @@ class Invasores:
             pygame.joystick.init()
             self.joystick = pygame.joystick.Joystick(0)
             self.joystick.init()
-        except:
-            pass
+        except Exception:
+            print("No joystick detected")
         self.sensibilidade_mouse = 5
         self.inicializa_eventos()
         self.inicializa_comandos()
@@ -140,7 +148,9 @@ class Invasores:
         self.iMissil = video.carregue("TIRO", "img/laser.png")
         self.iInimigo = video.carregue("INIMIGO", "img/inimigo.png")
         self.iCaixaDeMisseis = video.carregue("CMISSIL", "img/caixademisseis.png")
-        self.iCaixaDeResistencia = video.carregue("CRESITENCIA", "img/caixaderesistencia.png")
+        self.iCaixaDeResistencia = video.carregue(
+            "CRESITENCIA", "img/caixaderesistencia.png"
+        )
         self.logo = video.Imagem("LOGO", "img/Invasoreslogo.png")
         self.logo.ponto_croma(0, 0)
         self.fim_de_jogo = video.Imagem("FIMDEJOGO", "img/fimdejogo.png")
@@ -154,50 +164,126 @@ class Invasores:
     def fase1(self):
         self.script = [
             [0, self.mostra_texto, "fase1"],
-            [30, self.cria_alienigena, 100, 50, 4, 3, [(3, 0, 120), (-3, 1, 120), (3, 0, 120), (-3, 2, 120)]],
-            [31, self.cria_alienigena, 400, 50, 4, 3, [(5, 1, 120), (-5, 0, 120), (8, -1, 120), (-5, 2, 120)]],
+            [
+                30,
+                self.cria_alienigena,
+                100,
+                50,
+                4,
+                3,
+                [(3, 0, 120), (-3, 1, 120), (3, 0, 120), (-3, 2, 120)],
+            ],
+            [
+                31,
+                self.cria_alienigena,
+                400,
+                50,
+                4,
+                3,
+                [(5, 1, 120), (-5, 0, 120), (8, -1, 120), (-5, 2, 120)],
+            ],
             [250, self.cria_municao],
             [295, self.para_tempo_script, 1],
-            [300, self.cria_alienigena, 100, 50, 10, 2, [(3, 0, 120), (-3, 1, 120), (3, 0, 120), (-3, 2, 120)]],
+            [
+                300,
+                self.cria_alienigena,
+                100,
+                50,
+                10,
+                2,
+                [(3, 0, 120), (-3, 1, 120), (3, 0, 120), (-3, 2, 120)],
+            ],
             [450, self.cria_municao],
             [495, self.para_tempo_script, 1],
-            [500, self.cria_alienigena, 100, 50, 10, 4, [(4, 0, 120), (-4, 1, 120), (4, 0, 120), (-4, 2, 120)]],
+            [
+                500,
+                self.cria_alienigena,
+                100,
+                50,
+                10,
+                4,
+                [(4, 0, 120), (-4, 1, 120), (4, 0, 120), (-4, 2, 120)],
+            ],
             [700, self.cria_resistencia],
             [720, self.cria_municao],
             [895, self.para_tempo_script, 1],
-            [800, self.cria_alienigena, 100, 50, 12, 4, [(5, 0, 120), (-5, 1, 120), (5, 0, 120), (-5, 2, 120)]],
+            [
+                800,
+                self.cria_alienigena,
+                100,
+                50,
+                12,
+                4,
+                [(5, 0, 120), (-5, 1, 120), (5, 0, 120), (-5, 2, 120)],
+            ],
             [810, self.cria_municao],
             [850, self.cria_municao],
             [895, self.para_tempo_script, 1],
-            [900, None]]
+            [900, None],
+        ]
 
     def fase2(self):
         self.script = [
             [0, self.mostra_texto, "fase2"],
-            [100, self.cria_alienigena, 100, 100, 6, 4, [(5, 3, 120), (-3, 1, 120), (3, -1, 120), (-5, -2, 120)]],
+            [
+                100,
+                self.cria_alienigena,
+                100,
+                100,
+                6,
+                4,
+                [(5, 3, 120), (-3, 1, 120), (3, -1, 120), (-5, -2, 120)],
+            ],
             [250, self.cria_municao],
             [295, self.para_tempo_script, 1],
-            [300, self.cria_alienigena, 100, 100, 8, 6, [(5, 0, 120), (-3, 1, 120), (3, 0, 120), (-5, 2, 120)]],
+            [
+                300,
+                self.cria_alienigena,
+                100,
+                100,
+                8,
+                6,
+                [(5, 0, 120), (-3, 1, 120), (3, 0, 120), (-5, 2, 120)],
+            ],
             [450, self.cria_municao],
             [590, self.para_tempo_script, 1],
-            [600, self.cria_alienigena, 100, 100, 8, 6, [(4, 0, 120), (-4, 1, 120), (4, 0, 120), (-4, 2, 120)]],
+            [
+                600,
+                self.cria_alienigena,
+                100,
+                100,
+                8,
+                6,
+                [(4, 0, 120), (-4, 1, 120), (4, 0, 120), (-4, 2, 120)],
+            ],
             [700, self.cria_resistencia],
             [895, self.para_tempo_script, 1],
-            [900, self.cria_alienigena, 100, 100, 10, 6, [(6, 0, 120), (-6, 1, 120), (6, 0, 120), (-6, 2, 120)]],
+            [
+                900,
+                self.cria_alienigena,
+                100,
+                100,
+                10,
+                6,
+                [(6, 0, 120), (-6, 1, 120), (6, 0, 120), (-6, 2, 120)],
+            ],
             [1199, self.para_tempo_script, 1],
             [1200, self.mostra_texto, "venceu"],
-            [1500, self.saida]]
+            [1500, self.saida],
+        ]
 
     def faseT(self):
-        self.script = [[0, self.mostra_texto, "fase1"],
-                       [5, self.faseTCriaalienigena],
-                       [200, self.faseTCriaalienigena],
-                       [400, self.faseTCriaalienigena],
-                       [1400, self.saida]]
+        self.script = [
+            [0, self.mostra_texto, "fase1"],
+            [5, self.faseTCriaalienigena],
+            [200, self.faseTCriaalienigena],
+            [400, self.faseTCriaalienigena],
+            [1400, self.saida],
+        ]
 
-    def cria_alienigena(self, xi, yi, c, l, script, xl=60, yl=60):
-        for y in range(l):
-            for x in range(c):
+    def cria_alienigena(self, xi, yi, coluna, linha, script, xl=60, yl=60):
+        for y in range(linha):
+            for x in range(coluna):
                 a = Alienigena("Inimigo", [xi + x * xl, yi + y * yl], self.iInimigo)
                 a.set_script(script)
                 self.universo.adicione(a)
@@ -239,67 +325,91 @@ class Invasores:
 
     def atira(self, evento=None):
         if self.jogador.misseis > 0 and self.frame - self.ultimo_tiro >= 5:
-            self.universo.adicione(Laser("tiro",
-                                         [self.jogador.pos[0] + 5,
-                                          self.jogador.pos[1] - 30], self.iMissil))
-            self.universo.adicione(Laser("tiro",
-                                         [self.jogador.pos[0] + self.jogador.lx - 15,
-                                          self.jogador.pos[1] - 30], self.iMissil))
+            self.universo.adicione(
+                Laser(
+                    "tiro",
+                    [self.jogador.pos[0] + 5, self.jogador.pos[1] - 30],
+                    self.iMissil,
+                )
+            )
+            self.universo.adicione(
+                Laser(
+                    "tiro",
+                    [
+                        self.jogador.pos[0] + self.jogador.lx - 15,
+                        self.jogador.pos[1] - 30,
+                    ],
+                    self.iMissil,
+                )
+            )
             self.jogador.misseis -= 2
             self.ultimo_tiro = self.frame
 
     def cria_municao(self, carga=100):
-        caixa_m = ObjetosBonus("CaixaDeMisseis",
-                               [naleatorios.faixa(self.tamanho[0]), 10],
-                               self.iCaixaDeMisseis)
+        caixa_m = ObjetosBonus(
+            "CaixaDeMisseis",
+            [naleatorios.faixa(self.tamanho[0]), 10],
+            self.iCaixaDeMisseis,
+        )
         caixa_m.carga = carga
         self.universo.adicione(caixa_m)
 
     def cria_resistencia(self, carga=100):
-        caixa_r = ObjetosBonus("CaixaDeResistencia",
-                               [naleatorios.faixa(self.tamanho[0]), 10],
-                               self.iCaixaDeResistencia)
+        caixa_r = ObjetosBonus(
+            "CaixaDeResistencia",
+            [naleatorios.faixa(self.tamanho[0]), 10],
+            self.iCaixaDeResistencia,
+        )
         caixa_r.carga = carga
         self.universo.adicione(caixa_r)
 
     def tela_inicial(self):
         self.universo.desenhe_fundo()
         self.universo.desenhe([-1, -1], self.logo.imagem)
-        self.universo.escreva([-1, 450], traducao.pega("pressionequalquertecla"), (255, 255, 0), 24)
-        self.universo.escreva([-1, 200], "[P]Português [E]English [S]Spañol [F]Français", (255, 255, 0), 24)
+        self.universo.escreva(
+            [-1, 450], traducao.pega("pressionequalquertecla"), (255, 255, 0), 24
+        )
+        self.universo.escreva(
+            [-1, 200],
+            "[P]Português [E]English [S]Spañol [F]Français",
+            (255, 255, 0),
+            24,
+        )
         self.universo.atualize()
         while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
-                    return(1)
-                if event.type == KEYDOWN or event.type == JOYBUTTONDOWN:
+                if event.type == pg.QUIT:
+                    return 1
+                if event.type == pg.KEYDOWN or event.type == pg.JOYBUTTONDOWN:
                     teclas = pygame.key.get_pressed()
-                    if teclas[K_p]:
+                    if teclas[pg.K_p]:
                         traducao.dicionario("pt_br")
-                    if teclas[K_e]:
+                    if teclas[pg.K_e]:
                         traducao.dicionario("en")
-                    if teclas[K_s]:
+                    if teclas[pg.K_s]:
                         traducao.dicionario("es")
-                    if teclas[K_f]:
+                    if teclas[pg.K_f]:
                         traducao.dicionario("fr")
                     self.nova_partida()
-                    return(0)
+                    return 0
 
     def tela_fim_de_jogo(self):
         self.universo.desenhe([-1, -1], self.fim_de_jogo.imagem)
-        self.universo.escreva([-1, 450], traducao.pega("pressionexour"), (255, 255, 0), 24)
+        self.universo.escreva(
+            [-1, 450], traducao.pega("pressionexour"), (255, 255, 0), 24
+        )
         self.universo.atualize()
         while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pg.QUIT:
                     return True
-                if event.type == KEYDOWN:
+                if event.type == pg.KEYDOWN:
                     teclas = pygame.key.get_pressed()
-                    if teclas[K_r]:
+                    if teclas[pg.K_r]:
                         return 0
-                    elif teclas[K_x]:
+                    elif teclas[pg.K_x]:
                         return True
-                if event.type == JOYBUTTONDOWN:
+                if event.type == pg.JOYBUTTONDOWN:
                     if event.button % 2 == 0:
                         return False
                     else:
@@ -317,7 +427,7 @@ class Invasores:
         if evento.buttons[0] == 1:  # and c % 3 == 0:
             self.atira(evento)
 
-    def movejoystick(self, evento):
+    def movejoystick(self, event):
         if event.axis == 0:
             if event.value > 0.0:
                 self.jogador.ix = 5
@@ -330,12 +440,12 @@ class Invasores:
                 self.jogador.iy = -5
 
     def inicializa_eventos(self):
-        self.eventos[MOUSEBUTTONDOWN] = self.atira
-        self.eventos[MOUSEMOTION] = self.movemouse
-        self.eventos[JOYAXISMOTION] = self.movejoystick
-        self.eventos[MOUSEBUTTONDOWN] = self.atira
-        self.eventos[QUIT] = self.saida
-        self.eventos[JOYBUTTONDOWN] = self.atira
+        self.eventos[pg.MOUSEBUTTONDOWN] = self.atira
+        self.eventos[pg.MOUSEMOTION] = self.movemouse
+        self.eventos[pg.JOYAXISMOTION] = self.movejoystick
+        self.eventos[pg.MOUSEBUTTONDOWN] = self.atira
+        self.eventos[pg.QUIT] = self.saida
+        self.eventos[pg.JOYBUTTONDOWN] = self.atira
         # self.eventos[MOUSEBUTTONUP]
         # self.eventos[JOYBALLMOTION]
         # self.eventos[JOYBUTTONUP]
@@ -362,23 +472,23 @@ class Invasores:
         self.jogador.resistencia += 1000
 
     def inicializa_comandos(self):
-        self.comandos[K_LEFT] = self.esquerda
-        self.comandos[K_RIGHT] = self.direita
-        self.comandos[K_UP] = self.cima
-        self.comandos[K_DOWN] = self.baixo
-        self.comandos[K_SPACE] = self.atira
-        self.comandos[K_x] = self.saida
-        self.comandos[K_ESCAPE] = self.saida
-        self.comandos[K_m] = self.aumentamisseis
-        self.comandos[K_r] = self.aumentaresistencia
-        self.comandos[K_KP_PLUS] = self.video.proximo_modo
-        self.comandos[K_PLUS] = self.video.proximo_modo
-        self.comandos[K_EQUALS] = self.video.proximo_modo
-        self.comandos[K_KP_MINUS] = self.video.anterior_modo
-        self.comandos[K_MINUS] = self.video.anterior_modo
-        self.comandos[K_KP_MULTIPLY] = self.video.faz_tela_cheia
-        self.comandos[K_ASTERISK] = self.video.faz_tela_cheia
-        self.comandos[K_8] = self.video.faz_tela_cheia
+        self.comandos[pg.K_LEFT] = self.esquerda
+        self.comandos[pg.K_RIGHT] = self.direita
+        self.comandos[pg.K_UP] = self.cima
+        self.comandos[pg.K_DOWN] = self.baixo
+        self.comandos[pg.K_SPACE] = self.atira
+        self.comandos[pg.K_x] = self.saida
+        self.comandos[pg.K_ESCAPE] = self.saida
+        self.comandos[pg.K_m] = self.aumentamisseis
+        self.comandos[pg.K_r] = self.aumentaresistencia
+        self.comandos[pg.K_KP_PLUS] = self.video.proximo_modo
+        self.comandos[pg.K_PLUS] = self.video.proximo_modo
+        self.comandos[pg.K_EQUALS] = self.video.proximo_modo
+        self.comandos[pg.K_KP_MINUS] = self.video.anterior_modo
+        self.comandos[pg.K_MINUS] = self.video.anterior_modo
+        self.comandos[pg.K_KP_MULTIPLY] = self.video.faz_tela_cheia
+        self.comandos[pg.K_ASTERISK] = self.video.faz_tela_cheia
+        self.comandos[pg.K_8] = self.video.faz_tela_cheia
 
     def saida(self, evento=None):
         self.sair = True
@@ -413,7 +523,7 @@ class Invasores:
             self.incrementa_tempo_script()
             while True:
                 event = pygame.event.poll()
-                if event.type == NOEVENT:
+                if event.type == pg.NOEVENT:
                     break
                 if event.type in self.eventos:
                     self.eventos[event.type](event)
@@ -430,7 +540,7 @@ class Invasores:
             if self.script[pos_script][0] <= self.tempo_script:
                 if funcao:
                     funcao(*parametros)
-                #exec(self.script[pos_script][1])
+                # exec(self.script[pos_script][1])
                 pos_script += 1
                 if pos_script == len(self.script):
                     pos_script = 0
@@ -463,8 +573,8 @@ def jogo():
     O usuário pode pressionar X para sair em qualquer tela.
     """
     try:
-        # Cria o jogo em uma janela de 800x600
-        jogo = Invasores([800, 600])
+        # Cria o jogo em uma janela de 1024x768
+        jogo = Invasores([1024, 768])
         # Esconde o mouse
         pygame.mouse.set_visible(0)
         # Loop principal do Jogo

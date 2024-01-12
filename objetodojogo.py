@@ -5,7 +5,7 @@
 #
 #   Invasores is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation; either version 2 of the License, or
+#   the Free Software Foundation; either version 3 of the License, or
 #   (at your option) any later version.
 #
 #   Invasores is distributed in the hope that it will be useful,
@@ -17,13 +17,14 @@
 #   along with Invasores; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
 import pygame
-from pygame.locals import *
+import pygame.locals as pg
 from typing import Tuple
 
 
 class Posicao2D:
-    def __init__(x, y):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
 
@@ -37,21 +38,21 @@ class Posicao2D:
 
 class ObjetoDoJogo:
     """
-        Implementa os objetos do universo.
-        Um objeto do jogo representa uma imagem que será desenhada a cada frame.
-        Para mudar o estado do objeto, o universo chama o método :py:meth:`respire`
-        a cada frame.
+    Implementa os objetos do universo.
+    Um objeto do jogo representa uma imagem que será desenhada a cada frame.
+    Para mudar o estado do objeto, o universo chama o método :py:meth:`respire`
+    a cada frame.
 
-        Quando dois objetos colidem, o valor de dano é utilizado para subtrair
-        um valor da resistência do outro objeto.
+    Quando dois objetos colidem, o valor de dano é utilizado para subtrair
+    um valor da resistência do outro objeto.
 
-        Quando a resistência chega a zero, o objeto é removido do universo
+    Quando a resistência chega a zero, o objeto é removido do universo
     """
 
     def __init__(self, nome, pos, imagem=None, tipo=None):
         #: nome é utilizada para identificar um grupo de objetos
         self.nome = nome
-        #: pos é a posicao inicial do objeto
+        #: pos é a posição inicial do objeto
         self.pos = pos
         if imagem is not None:
             self.imagem = imagem
@@ -69,7 +70,7 @@ class ObjetoDoJogo:
         self.visivel = True
         #: resistencia é o valor que quando zerado retira o objeto do jogo
         self.resistencia = 0
-        #: dano é o valor subtraido quando algo colide com este objeto
+        #: dano é o valor subtraído quando algo colide com este objeto
         self.dano = 0
         #: estado variável utilizada para controlar estados e principalmente
         #: troca de imagens
@@ -90,14 +91,22 @@ class ObjetoDoJogo:
     def imagem(self, imagem):
         #: imagem é a figura que representara este objeto.
         self.__imagem = imagem
-        self.__imagem.set_colorkey(self.imagem.get_at((0, 0)), RLEACCEL)
+        self.__imagem.set_colorkey(self.imagem.get_at((0, 0)), pg.RLEACCEL)
         self.lx = self.__imagem.get_width()
         self.ly = self.__imagem.get_height()
 
     def __str__(self):
-        return "[%s] x = %d y = %d ix = %d iy=%d res=%d dano=%d\nL=%d\nA=%d" % \
-            (self.nome, self.pos[0], self.pos[1], self.ix, self.iy,
-                self.resistencia, self.dano, self.lx, self.ly)
+        return "[%s] x = %d y = %d ix = %d iy=%d res=%d dano=%d\nL=%d\nA=%d" % (
+            self.nome,
+            self.pos[0],
+            self.pos[1],
+            self.ix,
+            self.iy,
+            self.resistencia,
+            self.dano,
+            self.lx,
+            self.ly,
+        )
 
     def respire(self):
         """
@@ -133,11 +142,11 @@ class ObjetoDoJogo:
 
     def colida(self, objeto):
         """Chamado quando dois objetos colidem no jogo.
-           Para evitar que os inimigos colidam entre si, apenas objetos com nomes
-           diferentes podem colidir entre si.
+        Para evitar que os inimigos colidam entre si, apenas objetos com nomes
+        diferentes podem colidir entre si.
 
-           Em caso de colisão, retira da resistencia do objeto atual o dano
-           causado pelo outro objeto.
+        Em caso de colisão, retira da resistencia do objeto atual o dano
+        causado pelo outro objeto.
         """
         if objeto.nome != self.nome:
             self.resistencia -= objeto.dano
@@ -147,5 +156,4 @@ class ObjetoDoJogo:
         return pygame.Rect(self.pos[0], self.pos[1], self.lx, self.ly)
 
     def retangulo(self) -> Tuple[int, int, int, int]:
-        return (self.pos[0], self.pos[1],
-                self.pos[0] + self.lx, self.pos[1] + self.ly)
+        return (self.pos[0], self.pos[1], self.pos[0] + self.lx, self.pos[1] + self.ly)

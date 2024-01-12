@@ -5,7 +5,7 @@
 #
 #   Invasores is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation; either version 2 of the License, or
+#   the Free Software Foundation; either version 3 of the License, or
 #   (at your option) any later version.
 #
 #   Invasores is distributed in the hope that it will be useful,
@@ -19,20 +19,21 @@
 
 
 import naleatorios
-
-from video import *
-from typing import List, Dict, Tuple, Callable
+import pygame
+from video import Video
+from typing import List, Tuple
 from objetodojogo import ObjetoDoJogo
 
 
 class Universo:
     """
-        Responsável pela manutenção do conjunto de objetos do jogo (:py:class:`objetodojogo.ObjetoDoJogo`).
-        Esta classe varre sua lista de objetos, chamando o método de respiração
-        de cada objeto, rotina de cálculo de pontos e também gerando o fundo de estrelas.
+    Responsável pela manutenção do conjunto de objetos do jogo (:py:class:`objetodojogo.ObjetoDoJogo`).
+    Esta classe varre sua lista de objetos, chamando o método de respiração
+    de cada objeto, rotina de cálculo de pontos e também gerando o fundo de estrelas.
 
     """
-    def __init__(self, dimensao: Tuple[int, int], quadros: int=60) -> None:
+
+    def __init__(self, dimensao: Tuple[int, int], quadros: int = 60) -> None:
         """
         Inicializa o universo com valores
         :param tuple dimensao: tupla com a largura e altura da tela em pixels
@@ -54,7 +55,7 @@ class Universo:
 
     def reconfigura_video(self, mensagem: int):
         """Usado para trocar de resolução. Atualiza os limites do universo,
-           gera novas estrelas."""
+        gera novas estrelas."""
         if mensagem == 0:
             # Mudança de resolução
             self.largura = self.video.dimensao[0]
@@ -63,8 +64,8 @@ class Universo:
 
     def gere_estrelas(self) -> None:
         """Gera aleatoriamente as estrelas do fundo.
-           As coordenadas x e y de cada estrela são escolhidas aleatoriamente e representão a posição da estrela.
-           z é o tamanho da estrela.
+        As coordenadas x e y de cada estrela são escolhidas aleatoriamente e representão a posição da estrela.
+        z é o tamanho da estrela.
         """
         self.estrelas = []  # type: pygame.Rect
         for i in range(60):
@@ -108,7 +109,7 @@ class Universo:
 
     def escreva(self, posicao: List[int], texto, cor, tamanho=None):
         """Escreve uma mensagem de texto na posição x, y passada.
-           Se uma das posições for igual a -1, centraliza no eixo específico"""
+        Se uma das posições for igual a -1, centraliza no eixo específico"""
         if tamanho is not None:
             self.video.fonte(tamanho)
         imagem = self.video.texto(texto, cor)
@@ -135,13 +136,16 @@ class Universo:
 
     def desenhe_objetos(self):
         """Desenha a lista de objetos na tela"""
-        [self.video.tela.blit(objeto.imagem, objeto.pos)
-            for objeto in self.objetos if objeto.visivel]
+        [
+            self.video.tela.blit(objeto.imagem, objeto.pos)
+            for objeto in self.objetos
+            if objeto.visivel
+        ]
         self.teste_colisao()
 
     def atualize(self):
         """Atualiza o estado do jogo, chamando o método :meth:`ObjetoDoJogo.respire`
-           de todos os objetos na lista de desenho."""
+        de todos os objetos na lista de desenho."""
         [objeto.respire() for objeto in self.objetos]
         self.video.atualize()
 

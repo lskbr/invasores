@@ -2,9 +2,8 @@ import time
 
 
 class Temporizador:
-    """Classe utilitária, usada para registrar o tempo decorrido entre dois pontos
+    """Classe utilitária, usada para registrar o tempo decorrido entre dois pontos"""
 
-    """
     def __init__(self, nome, descricao, cabecalho=""):
         self.arquivo = open(nome, "w")
         self.arquivo.write("%s - %s\n\n" % (cabecalho, time.ctime()))

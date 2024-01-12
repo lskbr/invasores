@@ -5,7 +5,7 @@
 #
 #   Invasores is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation; either version 2 of the License, or
+#   the Free Software Foundation; either version 3 of the License, or
 #   (at your option) any later version.
 #
 #   Invasores is distributed in the hope that it will be useful,
@@ -17,7 +17,8 @@
 #   along with Invasores; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from objetodojogo import *
+
+from objetodojogo import ObjetoDoJogo
 
 
 def sinal(x):
@@ -30,9 +31,10 @@ def sinal(x):
 
 class Nave(ObjetoDoJogo):
     """
-        Implementa a nave com aceleração vetorial (x,y)
-        Faz o tratamento de colisão e evita objetos chamados "tiro"
+    Implementa a nave com aceleração vetorial (x,y)
+    Faz o tratamento de colisão e evita objetos chamados "tiro"
     """
+
     def __init__(self, nome, pos, imagem=None, tipo="JOGADOR"):
         super().__init__(nome, pos, imagem, tipo)
         self.resistencia = 300

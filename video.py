@@ -5,7 +5,7 @@
 #
 #   Invasores is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation; either version 2 of the License, or
+#   the Free Software Foundation; either version 3 of the License, or
 #   (at your option) any later version.
 #
 #   Invasores is distributed in the hope that it will be useful,
@@ -17,16 +17,17 @@
 #   along with Invasores; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+
 import pygame
 
-from pygame.locals import *
+import pygame.locals as pg
 from typing import Dict
 
 pygame.font.init()
 
-imagens = {}  # type: Dict[str, object]
+imagens: Dict[str, object] = {}
 
-modos = [[640, 480], [800, 600], [1024, 768], [1680, 1050]]
+modos = [[640, 480], [800, 600], [1024, 768], [1680, 1050], [1920, 1080]]
 
 tela = None
 
@@ -48,7 +49,7 @@ class Imagem:
         self.carregue_imagem(nome, local)
 
     def ponto_croma(self, x, y):
-        self.imagem.set_colorkey(self.imagem.get_at((x, y)), RLEACCEL)
+        self.imagem.set_colorkey(self.imagem.get_at((x, y)), pg.RLEACCEL)
 
     def carregue_imagem(self, nome, local):
         self.imagem = carregue(nome, local)
@@ -63,7 +64,6 @@ class Imagem:
 
 
 class Video:
-
     def __init__(self, dimensao, tela_cheia=False):
         self.notifica = []
         self.modo(dimensao, tela_cheia)
@@ -86,9 +86,9 @@ class Video:
             tela_cheia = self.tela_cheia
         else:
             self.tela_cheia = tela_cheia
-        flags = DOUBLEBUF | HWSURFACE
+        flags = pg.DOUBLEBUF | pg.HWSURFACE
         if tela_cheia:
-            flags = flags | FULLSCREEN
+            flags = flags | pg.FULLSCREEN
         self.tela = pygame.display.set_mode(dimensao, flags)
         tela = self.tela
         self.notifique(0)
@@ -105,7 +105,7 @@ class Video:
 
     def faz_tela_cheia(self, sim=None):
         if sim is None:
-            sim = ~ self.tela_cheia
+            sim = ~self.tela_cheia
         self.modo(self.dimensao, sim)
 
     def atualize(self):

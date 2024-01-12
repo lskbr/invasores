@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "invasores"
+version = "0.9.10b"
+description = "Very simple game written in Python"
+authors = ["Nilo Menezes <nilo@nilo.pro.br>"]
+license = "GPL v3.0"
+readme = "README.md"
+classifiers = [
+        "Development Status :: 3 - Alpha",
+        "Environment :: MacOS X",
+        "Environment :: X11 Applications",
+        "Environment :: Win32 (MS Windows)          ",
+        "Intended Audience :: Education",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Natural Language :: English",
+        "Natural Language :: French",
+        "Natural Language :: Spanish",
+        "Natural Language :: Portuguese (Brazilian)",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows :: Windows 10",
+        "Operating System :: Microsoft :: Windows :: Windows 11",
+        "Operating System :: POSIX :: BSD :: FreeBSD",
+        "Operating System :: POSIX :: BSD :: OpenBSD",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3.12",
+        "Topic :: Games/Entertainment :: Arcade",
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pygame-ce = "^2.4.0"
+
+[tool.poetry.group.dev.dependencies]
+Sphinx = "^7.2.6"
+sphinx-autobuild = "^2021.3.14"
+mypy = "^1.8.0"
+ruff = "^0.1.13"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

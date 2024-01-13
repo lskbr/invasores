@@ -21,8 +21,9 @@
 import pygame
 
 import pygame.locals as pg
-from typing import Dict
+from typing import Dict, Tuple
 
+pygame.init()
 pygame.font.init()
 
 imagens: Dict[str, object] = {}
@@ -67,10 +68,8 @@ class Video:
     def __init__(self, dimensao, tela_cheia=False):
         self.notifica = []
         self.modo(dimensao, tela_cheia)
-        #   self.tela = pygame.display.set_mode(dimensao,
-        #                                   DOUBLEBUF | HWSURFACE | FULLSCREEN)
         self.ifonte = pygame.font.Font(None, 24)
-        self.modo_atual = 1
+        self.modo_atual = 2
 
     def adicione(self, funcao):
         self.notifica.append(funcao)
@@ -81,7 +80,7 @@ class Video:
 
     def modo(self, dimensao, tela_cheia=None):
         global tela
-        self.dimensao = dimensao
+        self.dimensao: Tuple[int, int] = dimensao
         if tela_cheia is None:
             tela_cheia = self.tela_cheia
         else:
@@ -129,3 +128,9 @@ class Video:
 
     def icone(self, imagem):
         pygame.display.set_icon(imagem)
+
+    def rel_x(self, x: float) -> int:
+        return int(x * self.dimensao[0])
+
+    def rel_y(self, y: float) -> int:
+        return int(y * self.dimensao[1])

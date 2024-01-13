@@ -17,7 +17,7 @@
 #   along with Invasores; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from objetodojogo import ObjetoDoJogo
+from objeto_do_jogo import ObjetoDoJogo
 
 import som
 
@@ -29,8 +29,8 @@ class Laser(ObjetoDoJogo):
 
     def __init__(self, nome, pos, imagem=None, tipo="JOGADOR"):
         ObjetoDoJogo.__init__(self, nome, pos, imagem, tipo)
-        self.velocidade = 15
-        self.resistencia = 10
+        self.velocidade = 1000.0
+        self.resistência = 10
         self.dano = 50
         self.snd_disparo = som.carregue("LASER_DISPARO", "sons/missile.wav")
         if som.canais("LASER_DISPARO") < 4:
@@ -39,14 +39,13 @@ class Laser(ObjetoDoJogo):
     def move(self, direcao):
         pass
 
-    def respire(self):
+    def respire(self, dt: float = 1.0):
         super().respire()
-        self.pos[1] -= self.velocidade
+        self.pos[1] -= self.velocidade * dt
         if self.pos[1] < 0:
-            self.visivel = False
+            self.visível = False
             try:
                 self.universo.remova(self)
-            # self.som.stop()
             except Exception:
                 pass
 

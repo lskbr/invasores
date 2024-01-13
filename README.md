@@ -6,7 +6,6 @@ O projeto continua vivo. A versão atual foi testada com Python 3.6. Aos poucos 
 
 Documentação disponível em: http://invasores.readthedocs.io/pt_BR/latest/index.html
 
-
 ## Situação do Projeto
 
 Mudanças estão sendo feitas para a realização da versão 1.0. Veremos muitas versões 0.9x por que o target da versão 1.0 é possuir fases. O jogo foi planejado para ter 5 fases. Otimizações ainda estão pendentes.
@@ -17,13 +16,14 @@ Faça o download do jogo no GitHub.
 
 Invasores utiliza Python e PyGame sendo multiplataforma por definição. O jogo já foi testado nas seguintes plataformas:
 
-* Instalação Windows
+- Instalação Windows
 
-* Instalação Linux
+- Instalação Linux
 
-* Instalação Mac OS X
+- Instalação Mac OS X
 
-* Instalação FreeBSD
+- Instalação FreeBSD
+
 ```
     git clone https://github.com/lskbr/invasores
     cd invasores
@@ -49,22 +49,22 @@ Diversas mudanças estão ocorrendo no código. Verifique o GIT.
 Para a versão 1.0, a principal meta seria a divisão do jogo em fases.
 No entanto, outras metas surgiram antes disso:
 
-* Detecção de colisão fina, com quadrados internos
-* Desacoplar o jogo do loop principal
-* Redividir os módulos
-* Controles: otimizar, permitir customização
-* Score em barra
-* Log de eventos, permitir playback e save-games
-* Inimigos que atiram, com inteligência, linha de visão
-* Obstáculos
-* Menu
-* Textos introdutórios
-* Gravar em filme
-* Pacotes .deb, .rpm, .ebuild, ports e .exe
-* 2 jogadores
-* Versão em rede
-* Novas armas
-* Aumentar a equipe
+- Detecção de colisão fina, com quadrados internos
+- Desacoplar o jogo do loop principal
+- Redividir os módulos
+- Controles: otimizar, permitir customização
+- Score em barra
+- Log de eventos, permitir playback e save-games
+- Inimigos que atiram, com inteligência, linha de visão
+- Obstáculos
+- Menu
+- Textos introdutórios
+- Gravar em filme
+- Pacotes .deb, .rpm, .ebuild, ports e .exe
+- 2 jogadores
+- Versão em rede
+- Novas armas
+- Aumentar a equipe
 
 ## História
 
@@ -94,20 +94,27 @@ Atualmente a equipe é composta por: Nilo Menezes - LSKBR Programador, sonoplast
 
 Não poderia faltar uma série de agradecimentos:
 
-* Lúis Braga - por emprestar seus filhos e os ensinar a jogar o Invasores.
+- Lúis Braga - por emprestar seus filhos e os ensinar a jogar o Invasores.
 
-* Edson César - por emprestar o notebook e deixar eu instalar o Invasores no Mac OS X.
+- Edson César - por emprestar o notebook e deixar eu instalar o Invasores no Mac OS X.
 
-* Clebson Derivan - por instalar e testar o jogo no OpenBSD.
+- Clebson Derivan - por instalar e testar o jogo no OpenBSD.
 
-* Pablo Godoy - tradução para espanhol.
+- Pablo Godoy - tradução para espanhol.
 
-* Xavier Ricco - tradução para francês.
+- Xavier Ricco - tradução para francês.
 
 ## Pendências do site
 
-* Trocar as imagens
+- Trocar as imagens
 
-* Adicionar mais informações sobre o projeto
+- Adicionar mais informações sobre o projeto
 
-* Links para download
+- Links para download
+
+## Créditos
+
+- Explosões
+  https://opengameart.org/content/explosion
+- Naves
+  https://opengameart.org/content/modular-ships

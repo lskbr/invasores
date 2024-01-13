@@ -22,7 +22,9 @@ import naleatorios
 import pygame
 from video import Video
 from typing import List, Tuple
-from objetodojogo import ObjetoDoJogo
+
+from objeto_do_jogo import ObjetoDoJogo
+from typing import Dict, Callable
 
 
 class Universo:
@@ -33,24 +35,25 @@ class Universo:
 
     """
 
-    def __init__(self, dimensao: Tuple[int, int], quadros: int = 60) -> None:
+    def __init__(self, dimensão: Tuple[int, int], quadros: int = 60) -> None:
         """
         Inicializa o universo com valores
         :param tuple dimensao: tupla com a largura e altura da tela em pixels
         :param int quadros: quadros por segundo
         """
         #: lista de objetos do jogo
-        self.objetos = []  # type: List[ObjetoDoJogo]
-        self.colisoes = {}  # type: Dict[str,List]
-        self.video = Video(dimensao)
+        self.objetos: List[ObjetoDoJogo] = []
+        self.colisoes: Dict[str, List] = {}
+        self.video = Video(dimensão)
         self.video.adicione(self.reconfigura_video)
         self.quadros = quadros
-        self.largura = dimensao[0]
-        self.altura = dimensao[1]
+        self.largura = dimensão[0]
+        self.altura = dimensão[1]
         self.score = 0
-        self.calcule_pontos = None  # type: Callable[[ObjetoDoJogo, ObjetoDoJogo], int]
+        self.calcule_pontos: Callable[[ObjetoDoJogo, ObjetoDoJogo], int] = None
         self.gere_estrelas()
         self.intensidade_estrelas = 0
+        self.delta_t = 0.0
         self.clock = pygame.time.Clock()
 
     def reconfigura_video(self, mensagem: int):
@@ -64,7 +67,7 @@ class Universo:
 
     def gere_estrelas(self) -> None:
         """Gera aleatoriamente as estrelas do fundo.
-        As coordenadas x e y de cada estrela são escolhidas aleatoriamente e representão a posição da estrela.
+        As coordenadas x e y de cada estrela são escolhidas aleatoriamente e representam a posição da estrela.
         z é o tamanho da estrela.
         """
         self.estrelas = []  # type: pygame.Rect
@@ -127,7 +130,7 @@ class Universo:
             cor = [intensidade, intensidade, intensidade]
             # (255,255,100)
             pygame.draw.rect(self.video.tela, cor, estrela, 0)
-            # Mode a estrela para baixo para dar ideia de movimento
+            # Move a estrela para baixo para dar ideia de movimento
             estrela.y += 3
             # Se a estrela estiver fora da tela, reposiciona na primeira linha
             if estrela.y > self.altura:
@@ -139,19 +142,20 @@ class Universo:
         [
             self.video.tela.blit(objeto.imagem, objeto.pos)
             for objeto in self.objetos
-            if objeto.visivel
+            if objeto.visível
         ]
         self.teste_colisao()
 
     def atualize(self):
         """Atualiza o estado do jogo, chamando o método :meth:`ObjetoDoJogo.respire`
         de todos os objetos na lista de desenho."""
-        [objeto.respire() for objeto in self.objetos]
+        [objeto.respire(self.delta_t) for objeto in self.objetos]
         self.video.atualize()
 
     def finalize_sincronia(self):
         """Espera o fim do frame atual."""
-        self.clock.tick_busy_loop(self.quadros)
+        # self.clock.tick_busy_loop(self.quadros)
+        self.delta_t: float = self.clock.tick(self.quadros) / 1000.0
 
     def teste_colisao(self):
         """Verifica se objetos de classes diferentes colidem uns com os outros"""

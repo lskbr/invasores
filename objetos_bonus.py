@@ -18,7 +18,7 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-from objetodojogo import ObjetoDoJogo
+from objeto_do_jogo import ObjetoDoJogo
 
 
 class ObjetosBonus(ObjetoDoJogo):
@@ -27,19 +27,19 @@ class ObjetosBonus(ObjetoDoJogo):
     """
 
     def __init__(self, nome, pos, imagem=None, tipo="INIMIGO"):
-        ObjetoDoJogo.__init__(self, nome, pos, imagem, tipo)
-        self.iy = 5
+        super().__init__(nome, pos, imagem, tipo)
+        self.iy = 50
         self.ix = 0
-        self.resistencia = 1000
+        self.resistência = 1000
         self.dano = 0
         self.carga = 0
 
-    def respire(self):
-        ObjetoDoJogo.respire(self)
-        self.pos[1] += self.iy
+    def respire(self, dt: float = 1.0):
+        super().respire(dt)
+        self.pos[1] += self.iy * dt
         if self.pos[1] > self.universo.altura:
-            self.resistencia = 0
-            self.visivel = 0
+            self.resistência = 0
+            self.visível = 0
             try:
                 self.universo.objetos.remove(self)
             except Exception:
@@ -47,4 +47,4 @@ class ObjetosBonus(ObjetoDoJogo):
 
     def colida(self, objeto):
         if objeto.nome == "Nave":
-            self.resistencia = 0
+            self.resistência = 0

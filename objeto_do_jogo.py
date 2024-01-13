@@ -19,8 +19,16 @@
 
 
 import pygame
+import enum
 import pygame.locals as pg
 from typing import Tuple
+
+
+class Direção(enum.Enum):
+    CIMA = 3
+    BAIXO = 2
+    DIREITA = 0
+    ESQUERDA = 1
 
 
 class Posicao2D:
@@ -49,7 +57,7 @@ class ObjetoDoJogo:
     Quando a resistência chega a zero, o objeto é removido do universo
     """
 
-    def __init__(self, nome, pos, imagem=None, tipo=None):
+    def __init__(self, nome, pos, imagem=None, tipo=None, posição_centro=False):
         #: nome é utilizada para identificar um grupo de objetos
         self.nome = nome
         #: pos é a posição inicial do objeto
@@ -62,14 +70,17 @@ class ObjetoDoJogo:
             #: ly é a altura da imagem em pontos
             self.ly = 0
             self.__imagem = None
+        if posição_centro:
+            self.pos[0] -= self.lx // 2
+            self.pos[1] -= self.ly // 2
         #: ix é o incremento x aplicado durante a respiração
         self.ix = 0
         #: iy é o incremento y aplicado durante a respiração
         self.iy = 0
-        #: visivel indica se o objeto deve ou não ser desenhado
-        self.visivel = True
+        #: visível indica se o objeto deve ou não ser desenhado
+        self.visível = True
         #: resistencia é o valor que quando zerado retira o objeto do jogo
-        self.resistencia = 0
+        self.resistência = 0
         #: dano é o valor subtraído quando algo colide com este objeto
         self.dano = 0
         #: estado variável utilizada para controlar estados e principalmente
@@ -102,18 +113,17 @@ class ObjetoDoJogo:
             self.pos[1],
             self.ix,
             self.iy,
-            self.resistencia,
+            self.resistência,
             self.dano,
             self.lx,
             self.ly,
         )
 
-    def respire(self):
+    def respire(self, dt=1.0):
         """
         Chamado a cada frame. Utilizado para modificar o estado do objeto.
         """
-        if self.resistencia <= 0:
-            # self.universo.objetos.remove(self)
+        if self.resistência <= 0:
             if self.universo is not None:
                 self.universo.remova(self)
         self.rect = self.makeRect()
@@ -121,20 +131,9 @@ class ObjetoDoJogo:
     def carregue_imagem(self, nome: str) -> None:
         self.imagem = pygame.image.load(nome).convert()
 
-    def move(self, direcao: int):
+    def move(self, direcao: Direção):
         """
         Move o objeto, na direção indicada.
-
-        Observar que direção é um int!
-
-        - 0 - direita
-
-        - 1 - esquerda
-
-        - 2 - para baixo
-
-        - 3 - para cima
-
         A implementação deste método é responsável por fazer os ajustes de velocidade
         e posição necessários.
         """
@@ -145,11 +144,11 @@ class ObjetoDoJogo:
         Para evitar que os inimigos colidam entre si, apenas objetos com nomes
         diferentes podem colidir entre si.
 
-        Em caso de colisão, retira da resistencia do objeto atual o dano
+        Em caso de colisão, retira da resistência do objeto atual o dano
         causado pelo outro objeto.
         """
         if objeto.nome != self.nome:
-            self.resistencia -= objeto.dano
+            self.resistência -= objeto.dano
 
     def makeRect(self) -> pygame.Rect:
         """Retorna um retângulo com as dimensões deste objeto"""

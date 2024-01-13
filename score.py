@@ -20,10 +20,8 @@
 
 import pygame
 
-import traducao
-from objetodojogo import ObjetoDoJogo
-
-clock = pygame.time.Clock()
+import tradução
+from objeto_do_jogo import ObjetoDoJogo
 
 
 class Score(ObjetoDoJogo):
@@ -39,11 +37,10 @@ class Score(ObjetoDoJogo):
         self.fonte.set_bold(True)
         self.jogador = None
 
-    def respire(self):
-        # ObjetoDoJogo.respire(self)
+    def respire(self, dt: float):
         self.imagem = self.fonte.render(
-            traducao.pega("score")
-            % (self.universo.score, self.jogador.resistencia, self.jogador.misseis),
+            tradução.pega("score")
+            % (self.universo.score, self.jogador.resistência, self.jogador.misseis),
             True,
             (255, 255, 0, 0),
         )
@@ -57,41 +54,41 @@ class Texto(ObjetoDoJogo):
     """
 
     def __init__(self, nome, pos, texto, tamanho, tempo, universo, cor):
-        ObjetoDoJogo.__init__(self, nome, pos)
+        super().__init__(nome, pos)
         self.fonte = pygame.font.Font(None, tamanho)
         self.fonte.set_bold(True)
         self.jogador = None
-        self.resistencia = tempo
+        self.resistência = tempo
         self.universo = universo
         self.texto = texto
         self.cor = cor
-        self.imagem = self.fonte.render(traducao.pega(self.texto), True, self.cor)
+        self.imagem = self.fonte.render(tradução.pega(self.texto), True, self.cor)
         if self.pos == [-1, -1]:
             self.pos = [
                 (self.universo.largura - self.imagem.get_width()) / 2,
                 (self.universo.altura - self.imagem.get_height()) / 2,
             ]
 
-    def respire(self):
+    def respire(self, dt: float = 1.0):
         """Decrementa a resistência a cada frame.
         Com objetivo de fazer o texto sumir após x frames"""
-        self.resistencia -= 1
+        self.resistência -= dt
         super().respire()
 
 
 class ScoreComFPS(Score):
-    def __init__(self, nome, pos):
+    def __init__(self, nome, pos, universo):
         super().__init__(nome, pos)
+        self.universo = universo
 
-    def respire(self):
-        clock.tick(60)
+    def respire(self, dt: float = 0.0):
         self.imagem = self.fonte.render(
-            traducao.pega("scorefps")
+            tradução.pega("scorefps")
             % (
                 self.universo.score,
-                self.jogador.resistencia,
+                self.jogador.resistência,
                 self.jogador.misseis,
-                clock.get_fps(),
+                self.universo.clock.get_fps(),
             ),
             True,
             (255, 255, 0, 0),

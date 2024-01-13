@@ -20,7 +20,7 @@
 import naleatorios
 
 
-from objetodojogo import ObjetoDoJogo
+from objeto_do_jogo import ObjetoDoJogo
 
 import som
 
@@ -30,10 +30,10 @@ class Alienigena(ObjetoDoJogo):
 
     def __init__(self, nome, pos, imagem, tipo="INIMIGO"):
         super().__init__(nome, [pos[0], pos[1] - 200], imagem, tipo)
-        self.iy = 3 + naleatorios.faixa(0, 5)
-        self.ix = 3 + naleatorios.faixa(0, 5)
-        self.posical_final = pos[1]
-        self.resistencia = 50
+        self.iy = 30 + naleatorios.faixa(0, 50)
+        self.ix = 30 + naleatorios.faixa(0, 50)
+        self.posição_final = pos[1]
+        self.resistência = 50
         self.dano = 50
         self.valor = 10
         self.script_movimento = None
@@ -51,13 +51,13 @@ class Alienigena(ObjetoDoJogo):
         self.ix = self.script_movimento[self.pos_script][0]
         self.iy = self.script_movimento[self.pos_script][1]
 
-    def respire(self):
-        super().respire()
-        if self.resistencia <= 0:
+    def respire(self, dt: float = 1.0):
+        super().respire(dt)
+        if self.resistência <= 0:
             som.reproduza("ALIENIGENA_EXP")
             Alienigena.alienigenas_vivos -= 1
 
-        if self.pos[1] < self.posical_final:
+        if self.pos[1] < self.posição_final:
             self.iy = 10
         else:
             if self.iy == 10:
@@ -71,8 +71,8 @@ class Alienigena(ObjetoDoJogo):
                 self.ix = self.script_movimento[self.pos_script][0]
                 self.iy = self.script_movimento[self.pos_script][1]
 
-        self.pos[0] += self.ix
-        self.pos[1] += self.iy
+        self.pos[0] += self.ix * dt
+        self.pos[1] += self.iy * dt
 
         if self.pos[0] + self.lx > self.universo.largura or self.pos[0] < 0:
             if self.pos[0] < 0:

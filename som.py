@@ -30,36 +30,30 @@ except Exception:
     print("Sound initialization failure.", file=sys.stderr)
     inicializado = 0
 
-sons: Dict[str, pygame.mixer.Sound] = {}
+__sons: Dict[str, pygame.mixer.Sound] = {}
 
 
 def carregue(nome: str, local: str):
-    global sons
-    if nome not in sons:
+    if nome not in __sons:
         try:
-            sons[nome] = pygame.mixer.Sound(local)
-            return sons[nome]
+            __sons[nome] = pygame.mixer.Sound(local)
+            return __sons[nome]
         except Exception:
-            return None
+            print(f"Erro carregando som: {nome}")
 
 
 def reproduza(nome: str):
-    global sons
     try:
-        sons[nome].play()
+        __sons[nome].play()
     except Exception:
-        pass
+        print(f"Erro reproduzindo som: {nome}")
 
 
 def canais(nome=None):
-    global sons
-    if nome is None:
-        try:
+    try:
+        if nome is None:
             return pygame.mixer.get_num_channels()
-        except Exception:
-            return 0
-    else:
-        try:
-            return sons[nome].get_num_channels()
-        except Exception:
-            return 0
+        else:
+            return __sons[nome].get_num_channels()
+    except Exception:
+        return 0

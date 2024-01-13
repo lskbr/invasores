@@ -17,16 +17,13 @@
 #   along with Invasores; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-
-from objetodojogo import ObjetoDoJogo
+import math
+from objeto_do_jogo import ObjetoDoJogo, Direção
 
 
 def sinal(x):
-    """Retorna o sinal de um nimero"""
-    if x != 0:
-        return x / abs(x)
-    else:
-        return 1
+    """Retorna o sinal de um número"""
+    return math.copysign(1, x)
 
 
 class Nave(ObjetoDoJogo):
@@ -35,38 +32,43 @@ class Nave(ObjetoDoJogo):
     Faz o tratamento de colisão e evita objetos chamados "tiro"
     """
 
-    def __init__(self, nome, pos, imagem=None, tipo="JOGADOR"):
-        super().__init__(nome, pos, imagem, tipo)
-        self.resistencia = 300
+    def __init__(self, nome, pos, imagem=None, tipo="JOGADOR", posicao_centro=False):
+        super().__init__(nome, pos, imagem, tipo, posicao_centro)
+        self.resistência = 300
         self.dano = 10
         self.misseis = 300
+        self.velocidade_x = 50.0
+        self.velocidade_y = 50.0
+        self.max_velocidade_x = 500.0
+        self.max_velocidade_y = 500.0
 
-    def move(self, direcao):
-        if direcao == 0:
-            self.ix += 3
-        elif direcao == 1:
-            self.ix -= 3
-        elif direcao == 2:
-            self.iy += 3
-        elif direcao == 3:
-            self.iy -= 3
-        if abs(self.ix) > 15:
-            self.ix = sinal(self.ix) * 15
-        if abs(self.iy) > 15:
-            self.iy = sinal(self.iy) * 15
+    def move(self, direção: Direção):
+        if direção == Direção.DIREITA:
+            self.ix += self.velocidade_x
+        elif direção == Direção.ESQUERDA:
+            self.ix -= self.velocidade_x
+        elif direção == Direção.BAIXO:
+            self.iy += self.velocidade_y
+        elif direção == Direção.CIMA:
+            self.iy -= self.velocidade_y
+        if abs(self.ix) > self.max_velocidade_x:
+            self.ix = math.copysign(self.max_velocidade_x, self.ix)
+        if abs(self.iy) > self.max_velocidade_y:
+            self.iy = math.copysign(self.max_velocidade_y, self.iy)
+        # print(self.ix, self.iy)
 
     def colida(self, objeto):
         if objeto.nome == "CaixaDeMisseis":
             self.misseis += objeto.carga
         elif objeto.nome == "CaixaDeResistencia":
-            self.resistencia += objeto.carga
+            self.resistência += objeto.carga
         elif objeto.nome != "tiro":  # Evita colidir com os próprios mísseis
             super().colida(objeto)
 
-    def respire(self):
-        super().respire()
-        self.pos[0] += self.ix
-        self.pos[1] += self.iy
+    def respire(self, dt):
+        super().respire(dt)
+        self.pos[0] += self.ix * dt
+        self.pos[1] += self.iy * dt
         if self.pos[0] + self.lx > self.universo.largura or self.pos[0] < 0:
             if self.pos[0] < 0:
                 self.pos[0] = 0

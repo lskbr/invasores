@@ -27,8 +27,8 @@ Invasores utiliza Python e PyGame sendo multiplataforma por definição. O jogo 
 ```
     git clone https://github.com/lskbr/invasores
     cd invasores
-    pip install -r requirements.txt
-    python invasores
+    pip install .
+    python invasores.py
 ```
 
 ## Ajuda

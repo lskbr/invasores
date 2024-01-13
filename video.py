@@ -26,9 +26,12 @@ from typing import Dict, Tuple
 pygame.init()
 pygame.font.init()
 
+# print(pygame.font.get_fonts())
+
 imagens: Dict[str, object] = {}
 
-modos = [[640, 480], [800, 600], [1024, 768], [1680, 1050], [1920, 1080]]
+# modos = [[640, 480], [800, 600], [1024, 768], [1680, 1050], [1920, 1080]]
+modos = pygame.display.list_modes()
 
 tela = None
 
@@ -68,8 +71,8 @@ class Video:
     def __init__(self, dimensao, tela_cheia=False):
         self.notifica = []
         self.modo(dimensao, tela_cheia)
-        self.ifonte = pygame.font.Font(None, 24)
-        self.modo_atual = 2
+        self.ifonte = self.fonte(24)
+        self.modo_atual = 0
 
     def adicione(self, funcao):
         self.notifica.append(funcao)
@@ -92,7 +95,7 @@ class Video:
         tela = self.tela
         self.notifique(0)
 
-    def proximo_modo(self):
+    def próximo_modo(self):
         self.modo_atual = (self.modo_atual + 1) % len(modos)
         self.modo(modos[self.modo_atual])
 
@@ -116,8 +119,13 @@ class Video:
     def desenhe(self, imagem, posicao):
         self.tela.blit(imagem, posicao)
 
+    @staticmethod
+    def cria_fonte(nomes: list[str], tamanho: int) -> pygame.font.Font:
+        caminho_fonte = pygame.font.match_font(nomes)
+        return pygame.font.Font(caminho_fonte, tamanho)
+
     def fonte(self, tamanho):
-        self.ifonte = pygame.font.Font(None, tamanho)
+        self.ifonte = self.cria_fonte(["calibri", "arial"], tamanho)
 
     def texto(self, mensagem, cor):
         imagem = self.ifonte.render(mensagem, True, cor)

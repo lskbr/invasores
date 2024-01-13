@@ -149,6 +149,9 @@ class ObjetoDoJogo:
         """
         if objeto.nome != self.nome:
             self.resistência -= objeto.dano
+            # print(
+            #     f"{self.nome=} {self.resistência=} {objeto.nome=}  {objeto.dano=} {id(objeto)=} {id(self)=}"
+            # )
 
     def makeRect(self) -> pygame.Rect:
         """Retorna um retângulo com as dimensões deste objeto"""

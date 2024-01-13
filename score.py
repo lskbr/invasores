@@ -18,10 +18,11 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-import pygame
+# import pygame
 
 import tradução
 from objeto_do_jogo import ObjetoDoJogo
+from video import Video
 
 
 class Score(ObjetoDoJogo):
@@ -33,8 +34,8 @@ class Score(ObjetoDoJogo):
 
     def __init__(self, nome, pos=[0, 0]):
         super().__init__(nome, pos)
-        self.fonte = pygame.font.Font(None, 30)
-        self.fonte.set_bold(True)
+        self.fonte = Video.cria_fonte(["calibri", "arial", "mono"], 30)
+        # self.fonte.set_bold(True)
         self.jogador = None
 
     def respire(self, dt: float):
@@ -55,7 +56,7 @@ class Texto(ObjetoDoJogo):
 
     def __init__(self, nome, pos, texto, tamanho, tempo, universo, cor):
         super().__init__(nome, pos)
-        self.fonte = pygame.font.Font(None, tamanho)
+        self.fonte = Video.cria_fonte(["calibri", "arial", "mono"], tamanho)
         self.fonte.set_bold(True)
         self.jogador = None
         self.resistência = tempo
@@ -65,8 +66,8 @@ class Texto(ObjetoDoJogo):
         self.imagem = self.fonte.render(tradução.pega(self.texto), True, self.cor)
         if self.pos == [-1, -1]:
             self.pos = [
-                (self.universo.largura - self.imagem.get_width()) / 2,
-                (self.universo.altura - self.imagem.get_height()) / 2,
+                (self.universo.largura - self.imagem.get_width()) // 2,
+                (self.universo.altura - self.imagem.get_height()) // 2,
             ]
 
     def respire(self, dt: float = 1.0):

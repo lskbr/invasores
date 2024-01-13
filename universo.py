@@ -71,10 +71,10 @@ class Universo:
         z é o tamanho da estrela.
         """
         self.estrelas = []  # type: pygame.Rect
-        for i in range(60):
+        for i in range(180):
             x = naleatorios.faixa(1, self.largura)
             y = naleatorios.faixa(1, self.altura)
-            z = naleatorios.faixa(2, 6)
+            z = naleatorios.faixa(4, 10)
             rect = pygame.Rect(x, y, z, z)
             self.estrelas.append(rect)
 

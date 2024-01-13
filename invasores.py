@@ -61,6 +61,10 @@
 #              Refatoração, variáveis em português
 #              Animação e movimentos baseada no delta t
 #              Fases movidas da classe do jogo para um arquivo a parte.
+#              Melhoria no tratamento da resolução disponível e tamanho da janela
+#              Corrigida a posição inicial da nave
+#              Equilíbrio entre as colisões para evitar múltiplas colisões com o mesmo objeto
+#              Uso de fontes do sistema
 
 # TODO: limpar o código
 # TODO: reprojetar a engine de controle
@@ -89,7 +93,7 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 # Módulos do PyGame
-
+import os
 import pygame
 import pygame.joystick
 import pygame.locals as pg
@@ -113,11 +117,20 @@ from score import ScoreComFPS, Texto
 from objeto_do_jogo import Direção
 
 
+if os.name == "nt":
+    import ctypes
+
+    ctypes.windll.user32.SetProcessDPIAware()
+
+
 class Invasores:
     """
     Esta classe é responsável pelo jogo em si.
     Toda customização deve ser feita aqui
     """
+
+    JOGADOR_X_REL = 0.5
+    JOGADOR_Y_REL = 0.8
 
     def __init__(self, tela):
         self.tamanho = tela
@@ -129,7 +142,10 @@ class Invasores:
         self.sair = None
         self.jogador = Nave(
             "Nave",
-            pos=[self.video.rel_x(0.5), self.video.rel_y(0.8)],
+            pos=[
+                self.video.rel_x(self.JOGADOR_X_REL),
+                self.video.rel_y(self.JOGADOR_Y_REL),
+            ],
             imagem=self.iJogador,
             posicao_centro=True,
         )
@@ -191,7 +207,11 @@ class Invasores:
     def nova_partida(self):
         self.jogador.resistência = 300
         self.jogador.misseis = 300
-        self.jogador.pos = [400, 400]
+        self.jogador.pos = [
+            self.video.rel_x(self.JOGADOR_X_REL),
+            self.video.rel_y(self.JOGADOR_Y_REL),
+        ]
+
         self.jogador.ix = 0
         self.jogador.iy = 0
         self.universo.score = 0
@@ -206,7 +226,7 @@ class Invasores:
         Alienigena.alienigenas_vivos = 0
 
     def calcula_pontos(universo, a, b):
-        if a.nome != b.nome:
+        if a.nome != b.nome and a.resistência > 0 and b.resistência > 0:
             a.colida(b)
             b.colida(a)
             return a.valor + b.valor
@@ -334,7 +354,7 @@ class Invasores:
         self.eventos[pg.MOUSEMOTION] = self.move_mouse
         self.eventos[pg.JOYAXISMOTION] = self.move_joystick
         self.eventos[pg.MOUSEBUTTONDOWN] = self.atira
-        self.eventos[pg.QUIT] = self.saida
+        self.eventos[pg.QUIT] = self.saída
         self.eventos[pg.JOYBUTTONDOWN] = self.atira
 
     def esquerda(self):
@@ -349,11 +369,11 @@ class Invasores:
     def baixo(self):
         self.jogador.move(Direção.BAIXO)
 
-    def aumenta_misseis(self):
+    def aumenta_mísseis(self):
         """Cheat para aumentar o número de mísseis do jogador em 1000"""
         self.jogador.misseis += 1000
 
-    def aumenta_resistencia(self):
+    def aumenta_resistência(self):
         """Cheat para aumentar a resistência do jogador em 1000 pontos"""
         self.jogador.resistência += 1000
 
@@ -363,20 +383,20 @@ class Invasores:
         self.comandos[pg.K_UP] = self.cima
         self.comandos[pg.K_DOWN] = self.baixo
         self.comandos[pg.K_SPACE] = self.atira
-        self.comandos[pg.K_x] = self.saida
-        self.comandos[pg.K_ESCAPE] = self.saida
-        self.comandos[pg.K_m] = self.aumenta_misseis
-        self.comandos[pg.K_r] = self.aumenta_resistencia
-        self.comandos[pg.K_KP_PLUS] = self.video.proximo_modo
-        self.comandos[pg.K_PLUS] = self.video.proximo_modo
-        self.comandos[pg.K_EQUALS] = self.video.proximo_modo
+        self.comandos[pg.K_x] = self.saída
+        self.comandos[pg.K_ESCAPE] = self.saída
+        self.comandos[pg.K_m] = self.aumenta_mísseis
+        self.comandos[pg.K_r] = self.aumenta_resistência
+        self.comandos[pg.K_KP_PLUS] = self.video.próximo_modo
+        self.comandos[pg.K_PLUS] = self.video.próximo_modo
+        self.comandos[pg.K_EQUALS] = self.video.próximo_modo
         self.comandos[pg.K_KP_MINUS] = self.video.anterior_modo
         self.comandos[pg.K_MINUS] = self.video.anterior_modo
         self.comandos[pg.K_KP_MULTIPLY] = self.video.faz_tela_cheia
         self.comandos[pg.K_ASTERISK] = self.video.faz_tela_cheia
         self.comandos[pg.K_8] = self.video.faz_tela_cheia
 
-    def saida(self, evento=None):
+    def saída(self, evento=None):
         self.sair = True
 
     def carrega_fase(self):
@@ -386,7 +406,7 @@ class Invasores:
         self.ultimo_tiro = 0
         self.fases[self.fase](self)
 
-    def avanca_fase(self):
+    def avança_fase(self):
         self.fase += 1
         if self.fase == len(self.fases):
             return False
@@ -429,7 +449,7 @@ class Invasores:
                 pos_script += 1
                 if pos_script == len(self.script):
                     pos_script = 0
-                    if not self.avanca_fase():
+                    if not self.avança_fase():
                         return 0
 
             self.universo.desenhe_fundo()
@@ -458,8 +478,14 @@ def jogo():
     O usuário pode pressionar X para sair em qualquer tela.
     """
     try:
-        # Cria o jogo em uma janela de 1024x768
-        jogo = Invasores([1024, 768])
+        # Cria o jogo no primeiro modo menor que a metade da resolução máxima +/- 1/4 da tela
+        max_wh = video.modos[0]
+        for modo in video.modos[1:]:
+            if modo[0] <= max_wh[0] // 2 and modo[1] <= max_wh[1] // 2:
+                max_wh = modo
+                break
+
+        jogo = Invasores(max_wh)
         # Esconde o mouse
         pygame.mouse.set_visible(0)
         # Loop principal do Jogo

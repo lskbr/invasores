@@ -6,7 +6,7 @@ def fase1(jogo):
             jogo.cria_alienigena,
             100,
             200,
-            8,
+            10,
             4,
             [(200, 0, 120), (-200, 100, 120), (200, 0, 120), (-200, 200, 120)],
         ],
@@ -113,7 +113,7 @@ def fase2(jogo):
         ],
         [1199, jogo.para_tempo_script, 1],
         [1200, jogo.mostra_texto, "venceu"],
-        [1500, jogo.saida],
+        [1500, jogo.saída],
     ]
 
 
@@ -123,5 +123,5 @@ def faseT(jogo):
         [5, jogo.faseTCriaalienigena],
         [200, jogo.faseTCriaalienigena],
         [400, jogo.faseTCriaalienigena],
-        [1400, jogo.saida],
+        [1400, jogo.saída],
     ]

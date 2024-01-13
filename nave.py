@@ -35,7 +35,7 @@ class Nave(ObjetoDoJogo):
     def __init__(self, nome, pos, imagem=None, tipo="JOGADOR", posicao_centro=False):
         super().__init__(nome, pos, imagem, tipo, posicao_centro)
         self.resistência = 300
-        self.dano = 10
+        self.dano = 100
         self.misseis = 300
         self.velocidade_x = 50.0
         self.velocidade_y = 50.0

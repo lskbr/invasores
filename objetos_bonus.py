@@ -28,7 +28,7 @@ class ObjetosBonus(ObjetoDoJogo):
 
     def __init__(self, nome, pos, imagem=None, tipo="INIMIGO"):
         super().__init__(nome, pos, imagem, tipo)
-        self.iy = 50
+        self.iy = 250
         self.ix = 0
         self.resistência = 1000
         self.dano = 0

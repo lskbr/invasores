@@ -32,9 +32,9 @@ class Alienigena(ObjetoDoJogo):
         super().__init__(nome, [pos[0], pos[1] - 200], imagem, tipo)
         self.iy = 30 + naleatorios.faixa(0, 50)
         self.ix = 30 + naleatorios.faixa(0, 50)
-        self.posição_final = pos[1]
+        # self.posição_final = pos[1]
         self.resistência = 50
-        self.dano = 50
+        self.dano = 100
         self.valor = 10
         self.script_movimento = None
         self.pos_script = 0
@@ -57,11 +57,13 @@ class Alienigena(ObjetoDoJogo):
             som.reproduza("ALIENIGENA_EXP")
             Alienigena.alienigenas_vivos -= 1
 
-        if self.pos[1] < self.posição_final:
-            self.iy = 10
-        else:
-            if self.iy == 10:
-                self.iy = self.script_movimento[self.pos_script][1]
+        # if self.pos[1] < self.posição_final:
+        #     self.iy = 10
+        # else:
+        #     if self.iy == 10:
+        #         self.iy = self.script_movimento[self.pos_script][1]
+        # if self.script:
+        #     self.iy = self.script_movimento[self.pos_script][1]
         if self.script_movimento is not None:
             self.qmov += 1
             if self.qmov >= self.script_movimento[self.pos_script][2]:
@@ -82,6 +84,6 @@ class Alienigena(ObjetoDoJogo):
             self.ix *= -1
         if self.pos[1] + self.ly > self.universo.altura:  # or self.pos[1]<0:
             self.pos[1] = self.universo.altura - self.ly
-            if self.iy == 0:
-                self.iy = 2
+            # if self.iy == 0:
+            #     self.iy = 2
             self.iy *= -1
